@@ -5,10 +5,10 @@ import {
     bufferTime,
     bufferToggle, bufferWhen,
     concatAll, concatMap, defer,
-    EMPTY, filter,
+    EMPTY, exhaustAll, exhaustMap, filter,
     fromEvent, iif,
     interval,
-    map, mergeMap, of, switchMap, take,
+    map, mergeAll, mergeMap, of, switchMap, take,
     tap,
     timer
 } from "rxjs";
@@ -23,6 +23,47 @@ class RxjsComponent {
 
     constructor() {
         this.initComponent();
+    }
+
+    initComponent() {
+        if(rxjsService) {
+            this.rxService = rxjsService;
+        }
+    }
+
+    useExhaustMap() {
+        const startId = 1;
+
+        const clicks = fromEvent(document, 'click').pipe(
+            tap(() => console.log('New Click!')),
+            concatMap(
+                (x) => interval(100).pipe(take(5))
+            ),
+            map(
+                (x) => ajax.getJSON(config.url + '/' + Number(x + 1))
+            )
+        );
+
+        const clicksSub = clicks.pipe(
+            concatAll()
+        ).subscribe(getDefaultObserver(clicksSub, 'concatMap works!'))
+    }
+
+    useConcatMap() {
+        const startId = 1;
+
+        const clicks = fromEvent(document, 'click').pipe(
+            tap(() => console.log('New Click!')),
+            concatMap(
+                (x) => interval(1000).pipe(take(5))
+            )
+        );
+
+        const clicksSub = clicks.pipe(
+            concatMap(
+                (x) => ajax.getJSON(config.url + '/' + Number(x + 1))
+            )
+        ).subscribe(getDefaultObserver(clicksSub, 'concatMap works!'))
     }
 
     useBufferWhen() {
@@ -90,12 +131,6 @@ class RxjsComponent {
         const intervalEvents = interval(5000);
 
         //const bufferSubs = clicks.pipe(buffer(intervalEvents)).subscribe(getDefaultObserver(bufferSubs, 'Buffer: '));
-    }
-
-    initComponent() {
-        if(rxjsService) {
-            this.rxService = rxjsService;
-        }
     }
 
     usePartition(observable, predicateFunc) {
