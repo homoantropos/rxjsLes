@@ -3,8 +3,13 @@ import rxjsComponent from "./js/classes/rxjsComponent";
 import {concatAll, interval, map, mergeMap, of, take} from "rxjs";
 import { isSubscription } from "./js/utils/isSomething";
 
+rxjsComponent.usePairWise();
 
-rxjsComponent.useExhaustMap();
+//rxjsComponent.useMergeScan();
+
+//rxjsComponent.useExpand();
+
+//rxjsComponent.useExhaustMap();
 
 //rxjsComponent.useConcatMap();
 
