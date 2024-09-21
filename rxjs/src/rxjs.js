@@ -13,6 +13,10 @@ rxjsComponent.usePairWise();
 
 //rxjsComponent.useConcatMap();
 
+rxjsComponent.useExpand();
+
+//rxjsComponent.useExhaust();
+
 //rxjsComponent.useBufferWhen();
 
 //rxjsComponent.useBufferToggle();
