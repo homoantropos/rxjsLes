@@ -1,22 +1,24 @@
 import rxjsService from "../services/rxjsService";
 import {
+    animationFrames,
     buffer,
     bufferCount,
     bufferTime,
     bufferToggle, bufferWhen,
     concatAll, concatMap, defer, delay,
-    EMPTY, exhaustAll, exhaustMap, expand, filter, from,
+    EMPTY, endWith, exhaustAll, exhaustMap, expand, filter, from,
     fromEvent, iif,
     interval,
-    map, mergeAll, mergeMap, mergeScan, of, pairwise, switchMap, take,
+    map, mergeAll, mergeMap, mergeScan, of, pairwise, scan, switchAll, switchMap, switchScan, take, takeWhile,
     tap, throwError,
-    timer
+    timer, window, windowCount, windowTime, windowToggle
 } from "rxjs";
 import { getDefaultObserver } from "../utils/getDefaultObserver";
 import { logDebug } from "../utils/debugLogger";
 import {isArray, isEmptyArray} from "../utils/isSomething";
-import {ajax} from "rxjs/internal/ajax/ajax";
 import config from "../config/config";
+import {ajax} from "rxjs/internal/ajax/ajax";
+import {getNoZeroId} from "../utils/utils";
 
 class RxjsComponent {
     rxService;
@@ -29,6 +31,140 @@ class RxjsComponent {
         if(rxjsService) {
             this.rxService = rxjsService;
         }
+    }
+
+    useWindowToggle() {
+        logDebug('useWindow start');
+
+        const opening = fromEvent(document, 'click');
+
+        const sec1 = interval(1000).pipe(take(50));
+
+        const close = interval(5000).pipe(take(50));
+
+        const windowToggleSub = sec1.pipe(
+            windowToggle(opening, () => close),
+            mergeAll()
+        ).subscribe(getDefaultObserver(windowToggleSub, 'window toggle works'));
+    }
+
+    useWindowTime() {
+        logDebug('useWindow start');
+
+        const clicks = fromEvent(document, 'click')
+            .pipe(
+                map(() => 1),
+                mergeScan((acc, curr) => of(acc + curr), 0)
+            );
+
+        const sec1 = interval(1000).pipe(take(10), map((x) => x + 1));
+
+        const sec2 = interval(500).pipe(take(10), map((x) => x + 1));
+
+        const getPost = (id) => ajax.getJSON(config.url + '/' + getNoZeroId(id));
+
+        const winTimerSubs = clicks.pipe(
+            switchMap((x) => x % 2 ? sec1 : sec2),
+            concatMap((x) => getPost(x)),
+            windowTime(2000, 5000),
+            mergeAll()
+        ).subscribe(getDefaultObserver(winTimerSubs, 'winTimer works'));
+    }
+
+    useWindowCount() {
+        logDebug('useWindow start');
+
+        const clicks = fromEvent(document, 'click');
+
+        const sec1 = interval(1000).pipe(take(10));
+
+        const sec2 = interval(500).pipe(take(10));
+
+        const getPosts = (id) => ajax.getJSON(config.url + '/' + Number(id+1));
+
+        const winCountSub = clicks.pipe(
+            map(() => 1),
+            mergeScan((acc, curr) => of(acc + curr), 0),
+            mergeMap((v) => v % 2 ? sec1 : sec2),
+            concatMap((x) => getPosts(x)),
+            windowCount(2, 4),
+            concatAll()
+        ).subscribe(getDefaultObserver(winCountSub, 'winCount works'));
+    }
+
+    useWindow() {
+        logDebug('useWindow start');
+
+        const clicks = fromEvent(document, 'click');
+
+        const sec1 = interval(1000).pipe(
+            map(
+                (v) => 'sec1: ' + ' ' + v
+            )
+        );
+
+        const sec2 = interval(5000).pipe(
+            tap(() => console.log('sec 2 emitted!')),
+            map(
+                (v) => 'sec2: ' + ' ' + v
+            )
+        );
+
+
+        const winSubs = sec1.pipe(
+            window(sec2),
+            //map(win => win.pipe(take(2))),
+            //switchAll(),
+            take(100)
+        ).subscribe(getDefaultObserver(winSubs, 'window works!'));
+    }
+
+    useSwitchScan() {
+        logDebug('useSwitchScan start');
+
+        let getFirst = true;
+
+        const interval1 = interval(1000).pipe(take(10));
+
+        const interval2 = interval(1000).pipe(take(10));
+
+        const getIIF = iif(
+            () => getFirst,
+            interval(1000).pipe(take(10)),
+            interval(1000).pipe(take(10))
+        )
+
+        const clicks = fromEvent(document, 'click').pipe(
+            mergeScan((acc, current) => of(acc + current), 0),
+        );
+
+        const def = defer(
+            clicks,
+            
+        )
+        const scanSubs = clicks.pipe(
+            mergeMap((v) => of(v))
+        ).subscribe(getDefaultObserver(scanSubs, 'scan works'));
+    }
+
+    useScan() {
+        logDebug('useScan start');
+
+        const int = interval(1000).pipe(take(20));
+
+        const scanSubs = int.pipe(
+            scan((acc, curr) => acc + curr, 0)
+        ).subscribe(getDefaultObserver(scanSubs, 'scan works'));
+    }
+
+    tween(start, end, duration) {
+        const diff = end - start;
+        return animationFrames().pipe(
+            map(({ elapsed }) => elapsed / duration),
+            takeWhile(v => v < 1),
+            endWith(1),
+            map(v => v * diff + start)
+        );
     }
 
     usePairWise() {

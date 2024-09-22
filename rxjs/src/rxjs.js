@@ -3,7 +3,31 @@ import rxjsComponent from "./js/classes/rxjsComponent";
 import {concatAll, interval, map, mergeMap, of, take} from "rxjs";
 import { isSubscription } from "./js/utils/isSomething";
 
-rxjsComponent.usePairWise();
+rxjsComponent.useWindowToggle();
+
+//rxjsComponent.useWindowTime();
+
+//rxjsComponent.useWindowCount();
+
+//rxjsComponent.useWindow();
+
+//rxjsComponent.useSwitchScan();
+
+//rxjsComponent.useScan();
+
+// const div = document.createElement('div');
+// document.body.appendChild(div);
+// div.style.position = 'absolute';
+// div.style.width = '40px';
+// div.style.height = '40px';
+// div.style.backgroundColor = 'lime';
+// div.style.transform = 'translate3d(10px, 0, 0)';
+//
+// rxjsComponent.tween(0, document.body.clientWidth - div.clientWidth, 4000).subscribe(x => {
+//     div.style.transform = `translate3d(${ x }px, 0, 0)`;
+// });
+
+//rxjsComponent.usePairWise();
 
 //rxjsComponent.useMergeScan();
 
@@ -13,7 +37,7 @@ rxjsComponent.usePairWise();
 
 //rxjsComponent.useConcatMap();
 
-rxjsComponent.useExpand();
+//rxjsComponent.useExpand();
 
 //rxjsComponent.useExhaust();
 
