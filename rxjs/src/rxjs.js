@@ -3,7 +3,21 @@ import rxjsComponent from "./js/classes/rxjsComponent";
 import {concatAll, interval, map, mergeMap, of, take} from "rxjs";
 import { isSubscription } from "./js/utils/isSomething";
 
-rxjsComponent.useWindowToggle();
+rxjsComponent.useSample();
+
+//rxjsComponent.useDistinctUntilChange();
+
+//rxjsComponent.useDistinct();
+
+//rxjsComponent.useDebounceTime();
+
+//rxjsComponent.useDebounce();
+
+//rxjsComponent.useAuditTime();
+
+//rxjsComponent.useAudit();
+
+//rxjsComponent.useWindowToggle();
 
 //rxjsComponent.useWindowTime();
 

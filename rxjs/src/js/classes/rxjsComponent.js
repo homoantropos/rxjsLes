@@ -1,17 +1,57 @@
 import rxjsService from "../services/rxjsService";
+
 import {
     animationFrames,
+    audit,
+    auditTime,
     buffer,
     bufferCount,
     bufferTime,
-    bufferToggle, bufferWhen,
-    concatAll, concatMap, defer, delay,
-    EMPTY, endWith, exhaustAll, exhaustMap, expand, filter, from,
-    fromEvent, iif,
+    bufferToggle,
+    bufferWhen,
+    concatAll,
+    concatMap,
+    debounce,
+    debounceTime,
+    defer,
+    delay,
+    distinct,
+    distinctUntilChanged,
+    elementAt,
+    EMPTY,
+    endWith,
+    exhaustAll,
+    exhaustMap,
+    expand,
+    filter,
+    first,
+    from,
+    fromEvent,
+    ignoreElements,
+    iif,
     interval,
-    map, mergeAll, mergeMap, mergeScan, of, pairwise, scan, switchAll, switchMap, switchScan, take, takeWhile,
-    tap, throwError,
-    timer, window, windowCount, windowTime, windowToggle
+    last,
+    map,
+    mergeAll,
+    mergeMap,
+    mergeScan,
+    of,
+    pairwise,
+    sample,
+    scan,
+    Subject,
+    switchAll,
+    switchMap,
+    switchScan,
+    take,
+    takeWhile,
+    tap,
+    throwError,
+    timer,
+    window,
+    windowCount,
+    windowTime,
+    windowToggle
 } from "rxjs";
 import { getDefaultObserver } from "../utils/getDefaultObserver";
 import { logDebug } from "../utils/debugLogger";
@@ -19,18 +59,153 @@ import {isArray, isEmptyArray} from "../utils/isSomething";
 import config from "../config/config";
 import {ajax} from "rxjs/internal/ajax/ajax";
 import {getNoZeroId} from "../utils/utils";
+import {domQueries} from "../config/domQueries";
 
 class RxjsComponent {
     rxService;
+
+    lessonInput;
+
+    submitButton;
+
+    emitterSubject = new Subject();
 
     constructor() {
         this.initComponent();
     }
 
     initComponent() {
+        this.bindListeners();
+
         if(rxjsService) {
             this.rxService = rxjsService;
         }
+
+        this.lessonInput = document.querySelector(domQueries.input);
+
+        this.submitButton = document.querySelector(domQueries.submitButton);
+
+        if(this.submitButton) {
+            this.submitButton.addEventListener('click', this.emitSubjectNext, { passive: true })
+        }
+    }
+
+    useSample() {
+        logDebug('useSample start');
+
+        if(this.lessonInput) {
+            const listenInput = fromEvent(this.lessonInput, 'input').pipe(
+                map(
+                    (inputEvent) => inputEvent.target.value
+                )
+            );
+
+            const sampleSub = listenInput.pipe(
+                debounceTime(500),
+                distinctUntilChanged(),
+                filter((value) => value.includes('a')),
+                sample(this.emitterSubject.asObservable())
+            ).subscribe(getDefaultObserver(sampleSub, 'sample works: '));
+        }
+    }
+
+    useDistinctUntilKeyChanged() {
+
+    }
+
+    useDistinctUntilChange() {
+        logDebug('useDistinctUntilChange start');
+
+        if(this.lessonInput) {
+            const listenInput = fromEvent(this.lessonInput, 'input').pipe(
+                map(
+                    (inputEvent) => inputEvent.target.value
+                )
+            );
+
+            const debounceSub = listenInput.pipe(
+                debounceTime(500),
+                distinctUntilChanged(),
+                filter((value) => value.includes('a'))
+            ).subscribe(getDefaultObserver(debounceSub, 'distinctUntilChange works: '));
+        }
+    }
+
+    useDistinct() {
+        logDebug('useDistinct start');
+
+        if(this.lessonInput) {
+            const listenInput = fromEvent(this.lessonInput, 'input').pipe(
+                map(
+                    (inputEvent) => inputEvent.target.value
+                )
+            );
+
+            const debounceSub = listenInput.pipe(
+                debounceTime(300),
+                distinct()
+            ).subscribe(getDefaultObserver(debounceSub, 'distinct works: '));
+        }
+    }
+
+    useDebounceTime() {
+        logDebug('useDebounceTime start');
+
+        if(this.lessonInput) {
+            const listenInput = fromEvent(this.lessonInput, 'input').pipe(
+                map(
+                    (inputEvent) => inputEvent.target.value
+                )
+            );
+
+            const debounceSub = listenInput.pipe(
+                debounceTime(500)
+            ).subscribe(getDefaultObserver(debounceSub, 'debounceTime works: '));
+        }
+    }
+
+    useDebounce() {
+        logDebug('useDebounce start');
+
+        if(this.lessonInput) {
+            const listenInput = fromEvent(this.lessonInput, 'input').pipe(
+                map(
+                    (inputEvent) => inputEvent.target.value
+                )
+            );
+
+            const debounceSub = listenInput.pipe(
+                debounce(() => interval(1000))
+            ).subscribe(getDefaultObserver(debounceSub, 'debounce works: '));
+        }
+    }
+
+    useAuditTime() {
+        logDebug('useAuditTime start');
+
+        const mouseMove = fromEvent(document, 'mousemove').pipe(
+            map(
+                (museMove) => ({x: museMove.clientX, y: museMove.clientY})
+            )
+        );
+
+        const auditSubs = mouseMove.pipe(
+            auditTime(5000)
+        ).subscribe(getDefaultObserver(auditSubs, 'audit works: '));
+    }
+
+    useAudit() {
+        logDebug('useAudit start');
+
+        const mouseMove = fromEvent(document, 'mousemove').pipe(
+            map(
+                (museMove) => ({x: museMove.clientX, y: museMove.clientY})
+            )
+        );
+
+        const auditSubs = mouseMove.pipe(
+            audit(() => interval(5000).pipe(take(20)))
+        ).subscribe(getDefaultObserver(auditSubs, 'audit works: '));
     }
 
     useWindowToggle() {
@@ -345,6 +520,14 @@ class RxjsComponent {
 
     useConcat(...arg) {
         return this.rxService.concat(...arg);
+    }
+
+    bindListeners() {
+        this.emitSubjectNext = this.emitSubjectNext.bind(this);
+    }
+
+    emitSubjectNext() {
+        this.emitterSubject.next();
     }
 }
 
