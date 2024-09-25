@@ -38,14 +38,14 @@ import {
     of,
     pairwise,
     sample,
-    scan,
+    scan, skip, skipLast, skipUntil,
     Subject,
     switchAll,
     switchMap,
     switchScan,
-    take,
+    take, takeLast,
     takeWhile,
-    tap,
+    tap, throttle,
     throwError,
     timer,
     window,
@@ -90,6 +90,26 @@ class RxjsComponent {
         }
     }
 
+    useThrottle() {
+        logDebug('useThrottle start');
+
+        const intervalEmitter = interval(1000).pipe(take(20));
+
+        const intervalSub = intervalEmitter.pipe(
+            throttle(() => this.emitterSubject.asObservable())
+        ).subscribe(getDefaultObserver(intervalSub, 'useSkipUntil works'));
+    }
+
+    useSkipUntil() {
+        logDebug('useSkipUntil start');
+
+        const intervalEmitter = interval(1000).pipe(take(10));
+
+        const intervalSub = intervalEmitter.pipe(
+            takeLast(2)
+        ).subscribe(getDefaultObserver(intervalSub, 'useSkipUntil works'));
+    }
+
     useSample() {
         logDebug('useSample start');
 
@@ -104,7 +124,8 @@ class RxjsComponent {
                 debounceTime(500),
                 distinctUntilChanged(),
                 filter((value) => value.includes('a')),
-                sample(this.emitterSubject.asObservable())
+                //sample(this.emitterSubject.asObservable()),
+                skipLast()
             ).subscribe(getDefaultObserver(sampleSub, 'sample works: '));
         }
     }
