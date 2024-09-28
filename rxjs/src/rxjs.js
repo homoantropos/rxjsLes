@@ -3,6 +3,8 @@ import rxjsComponent from "./js/classes/rxjsComponent";
 import {concatAll, interval, map, mergeMap, of, take} from "rxjs";
 import { isSubscription } from "./js/utils/isSomething";
 
+//rxjsComponent.useCombineLatestAll();
+
 //rxjsComponent.useConcatAll();
 
 //rxjsComponent.useThrottle();

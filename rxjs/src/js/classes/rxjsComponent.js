@@ -8,7 +8,7 @@ import {
     bufferCount,
     bufferTime,
     bufferToggle,
-    bufferWhen,
+    bufferWhen, combineLatest, combineLatestAll, concat,
     concatAll,
     concatMap,
     debounce,
@@ -24,7 +24,7 @@ import {
     exhaustMap,
     expand,
     filter,
-    first,
+    first, forkJoin,
     from,
     fromEvent,
     ignoreElements,
@@ -36,7 +36,7 @@ import {
     mergeMap,
     mergeScan,
     of,
-    pairwise,
+    pairwise, race, range,
     sample,
     scan, skip, skipLast, skipUntil,
     Subject,
@@ -90,7 +90,23 @@ class RxjsComponent {
         }
     }
 
+    useCombineLatestAll() {
+        logDebug('useCombineLatestAll start');
+
+        const numbers1 = range(1, 10).pipe(concatMap(value => timer(2000).pipe(map(() => value))));
+
+        const numbers2 = range(11, 10).pipe(concatMap(value => timer(1500).pipe(map(() => value))));
+
+        const numbers3 = range(21, 10).pipe(concatMap(value => timer(3500).pipe(map(() => value))));
+
+        const clicks = fromEvent(document, 'click').pipe(map(() => 'click 1!'));
+
+        const subs1 = race(clicks, numbers1, numbers2, numbers3).subscribe(getDefaultObserver(subs1, 'working'));
+    }
+
     useConcatAll() {
+        logDebug('useConcatAll start');
+
         const mainSubs = interval(1000).pipe(
             takeUntil(this.emitterSubject)
         );
