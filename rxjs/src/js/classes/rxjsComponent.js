@@ -43,7 +43,7 @@ import {
     switchAll,
     switchMap,
     switchScan,
-    take, takeLast,
+    take, takeLast, takeUntil,
     takeWhile,
     tap, throttle,
     throwError,
@@ -88,6 +88,26 @@ class RxjsComponent {
         if(this.submitButton) {
             this.submitButton.addEventListener('click', this.emitSubjectNext, { passive: true })
         }
+    }
+
+    useConcatAll() {
+        const mainSubs = interval(1000).pipe(
+            takeUntil(this.emitterSubject)
+        );
+
+        const concatAllSub = mainSubs.pipe(
+            map(
+                (x) => of(x)
+            ),
+            concatAll()
+        ).subscribe(getDefaultObserver(concatAllSub, 'concatMap works!'));
+
+        mainSubs.pipe().subscribe(
+            {
+                next: (x) => console.log('econd: ', x),
+                complete: () => console.log('complete second')
+            }
+        )
     }
 
     useThrottle() {
