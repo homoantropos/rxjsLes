@@ -1,9 +1,7 @@
 import rxjsService from "../services/rxjsService";
 
 import {
-    animationFrames,
-    audit,
-    auditTime,
+    animationFrames, audit, auditTime,
     buffer,
     bufferCount,
     bufferTime,
@@ -51,7 +49,7 @@ import {
     window,
     windowCount,
     windowTime,
-    windowToggle
+    windowToggle, windowWhen
 } from "rxjs";
 import { getDefaultObserver } from "../utils/getDefaultObserver";
 import { logDebug } from "../utils/debugLogger";
@@ -101,7 +99,7 @@ class RxjsComponent {
 
         const clicks = fromEvent(document, 'click').pipe(map(() => 'click 1!'));
 
-        const subs1 = race(clicks, numbers1, numbers2, numbers3).subscribe(getDefaultObserver(subs1, 'working'));
+        const subs1 = race([clicks, numbers1, numbers2, numbers3]).subscribe(getDefaultObserver(subs1, 'working'));
     }
 
     useConcatAll() {
