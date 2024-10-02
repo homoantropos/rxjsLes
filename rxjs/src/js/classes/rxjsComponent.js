@@ -36,7 +36,7 @@ import {
     of,
     pairwise, race, range,
     sample,
-    scan, skip, skipLast, skipUntil,
+    scan, share, skip, skipLast, skipUntil,
     Subject,
     switchAll,
     switchMap,
@@ -86,6 +86,30 @@ class RxjsComponent {
         if(this.submitButton) {
             this.submitButton.addEventListener('click', this.emitSubjectNext, { passive: true })
         }
+    }
+
+    useShare() {
+        logDebug('useShare start');
+
+        const source = interval(1000).pipe(
+            tap(() => console.log('subscription started')),
+            take(3),
+            share({
+                resetOnRefCountZero: timer(1000)
+            })
+        );
+
+        const subs1 = source.subscribe(getDefaultObserver(subs1, 'subs 1: '));
+
+        setTimeout(() => subs1.unsubscribe(), 1300);
+
+        setTimeout(() => {
+            const subs2 = source.subscribe(getDefaultObserver(subs2, 'subs 2: '));
+        }, 1700);
+
+        setTimeout(() => {
+            const subs3 = source.subscribe(getDefaultObserver(subs3, 'subs 3: '));
+        }, 5000);
     }
 
     useCombineLatestAll() {
