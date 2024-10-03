@@ -12,8 +12,6 @@ class ReduxStoreService {
     }
 
     showStore() {
-        console.log('store: ', this.store);
-
         this.store.subscribe(() => console.log(this.store.getState()));
 
         this.store.dispatch({ type: 'INCREMENT' });
@@ -33,7 +31,7 @@ class ReduxStoreService {
     }
 
     createStore(){
-        this.store = configureStore({reducer: this.countReducer.bind(this)});
+        this.store = configureStore({reducer: this.countReducer});
     }
 }
 

@@ -4,8 +4,6 @@ import {concatAll, interval, map, mergeMap, of, take} from "rxjs";
 import { isSubscription } from "./js/utils/isSomething";
 import reduxStore from "./js/services/reduxStore.js";
 
-console.log('Hello RxJS!');
-
 reduxStore.showStore();
 
 //rxjsComponent.useMaterialize();
