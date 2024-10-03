@@ -2,8 +2,15 @@ import './rxjs.scss';
 import rxjsComponent from "./js/classes/rxjsComponent";
 import {concatAll, interval, map, mergeMap, of, take} from "rxjs";
 import { isSubscription } from "./js/utils/isSomething";
+import reduxStore from "./js/services/reduxStore.js";
 
-rxjsComponent.useShare();
+console.log('Hello RxJS!');
+
+reduxStore.showStore();
+
+//rxjsComponent.useMaterialize();
+
+//rxjsComponent.useShare();
 
 //rxjsComponent.useCombineLatestAll();
 

@@ -10,7 +10,8 @@ module.exports = ['rxjs'].map(name => {
         output: {
             path: path.resolve(__dirname, `./${name}/dist/`),
             filename: `${name}.js`,
-            clean: true
+            clean: true,
+            publicPath: "./"
         },
         mode: "none",
         module: {

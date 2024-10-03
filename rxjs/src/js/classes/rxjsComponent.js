@@ -6,13 +6,13 @@ import {
     bufferCount,
     bufferTime,
     bufferToggle,
-    bufferWhen, combineLatest, combineLatestAll, concat,
+    bufferWhen, catchError, combineLatest, combineLatestAll, concat,
     concatAll,
     concatMap,
     debounce,
     debounceTime,
     defer,
-    delay,
+    delay, dematerialize,
     distinct,
     distinctUntilChanged,
     elementAt,
@@ -29,12 +29,12 @@ import {
     iif,
     interval,
     last,
-    map,
+    map, materialize,
     mergeAll,
     mergeMap,
     mergeScan,
     of,
-    pairwise, race, range,
+    pairwise, race, range, retry,
     sample,
     scan, share, skip, skipLast, skipUntil,
     Subject,
@@ -86,6 +86,36 @@ class RxjsComponent {
         if(this.submitButton) {
             this.submitButton.addEventListener('click', this.emitSubjectNext, { passive: true })
         }
+    }
+
+    notificationsLog = [];
+
+    useMaterialize() {
+        logDebug('useMaterialize start');
+
+        const producerSource = concat(
+            throwError(() => new Error('Just silly error')).pipe(
+                catchError((error) => of(error))
+            ),
+            of('a', 'b', 'c', 11, 'd')
+            .pipe(map(value => value.toUpperCase())),
+            EMPTY
+        );
+
+        const materializeSub = producerSource.pipe(
+            catchError(
+                (error) => of(error)
+            ),
+            materialize(),
+            tap(
+                (notification) => this.notificationsLog.push(notification)
+            ),
+            dematerialize()
+        ).subscribe(getDefaultObserver(materializeSub, 'materialize works', (value) => {
+            console.log('value: ', value);
+
+            console.log('notificationsLog: ', this.notificationsLog);
+        }, (error)=> console.log('err: ', error)));
     }
 
     useShare() {
