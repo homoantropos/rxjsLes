@@ -153,7 +153,9 @@ class RxjsComponent {
 
         const clicks = fromEvent(document, 'click').pipe(map(() => 'click 1!'));
 
-        const subs1 = race([clicks, numbers1, numbers2, numbers3]).subscribe(getDefaultObserver(subs1, 'working'));
+        const subs1 = of([clicks, numbers1, numbers2, numbers3]).pipe(
+            combineLatestAll()
+        ).subscribe(getDefaultObserver(subs1, 'working'));
     }
 
     useConcatAll() {
