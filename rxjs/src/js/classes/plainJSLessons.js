@@ -4,7 +4,7 @@ class PlainJSLessons {
     executionTimes = new Map();
 
     loopsMethodsNames = [
-        'useFor', 'useForEach', 'useForOf', 'useForIn', 'useMap', 'useFirst', 'useSome', 'useEvery', 'useFilter', 'useReduce', 'useFind'
+        'useWhile', 'useDoWhile', 'useFor', 'useForEach', 'useForOf', 'useForIn', 'useMap', 'useSome', 'useEvery', 'useFilter', 'useReduce', 'useFind'
     ]
 
     constructor(){
@@ -34,11 +34,11 @@ class PlainJSLessons {
     }
 
     async setMethodRunTime(methodName) {
-        const startTime = performance.now();
+        const startTime = Date.now();
 
-        await this[methodName]();
+        this[methodName] && (await this[methodName]());
 
-        const endTime = performance.now();
+        const endTime = Date.now();
 
         const elapsedTime = endTime - startTime;
 
@@ -46,12 +46,10 @@ class PlainJSLessons {
     }
 
     logMethodsTimes() {
-        const sortedTimesArray = Array.from(this.executionTimes).sort((a, b) => a.elapsedTime - b.elapsedTime);
+        const sortedTimesArray = Array.from(this.executionTimes).sort((a, b) => a[1] - b[1]);
 
-        console.log('Sorted Execution Times:', sortedTimesArray);
-
-        this.executionTimes.forEach((item) => {
-            console.log(`${item.methodName}: ${item.elapsedTime.toFixed(2)} ms`);
+        sortedTimesArray.forEach((item) => {
+            console.log(`${item[0]}: ${item[1].toFixed(2)} ms`);
         });
     }
 
@@ -59,7 +57,11 @@ class PlainJSLessons {
         try {
             const arr = [];
 
-            for(let i = 0; i < this.hugeArray.length; i++){
+            const arrLength = this.hugeArray.length;
+
+            let i = 0;
+
+            for(i; i < arrLength; i++){
                 arr.push(this.hugeArray[i]);
             }
 
@@ -85,7 +87,7 @@ class PlainJSLessons {
         try {
             const arr = [];
 
-            for(let i = 0; i < this.hugeArray.length; i++){
+            for(let i of this.hugeArray) {
                 arr.push(this.hugeArray[i]);
             }
 
@@ -97,13 +99,11 @@ class PlainJSLessons {
 
     async useForIn() {
         try {
-            const arr = [];
-
-            for(let i = 0; i < this.hugeArray.length; i++){
-                arr.push(this.hugeArray[i]);
-            }
-
-            console.log('useForIn: ', arr.length);
+            // const arr = [];
+            //
+            // for(let i = 0; i < this.hugeArray.length; i++){
+            //     arr.push(this.hugeArray[i]);
+            // }
         } catch(e) {
             console.error(e);
         }
@@ -111,11 +111,7 @@ class PlainJSLessons {
 
     async useMap() {
         try {
-            const arr = [];
-
-            for(let i = 0; i < this.hugeArray.length; i++){
-                arr.push(this.hugeArray[i]);
-            }
+            const arr = this.hugeArray.map((value) => value);
 
             console.log('useMap: ', arr.length);
         } catch(e) {
@@ -123,15 +119,39 @@ class PlainJSLessons {
         }
     }
 
-    async useFirst() {
+    async useWhile() {
         try {
             const arr = [];
 
-            for(let i = 0; i < this.hugeArray.length; i++){
+            let i = 0;
+
+            const arrLength = this.hugeArray.length;
+
+            while(i < arrLength){
                 arr.push(this.hugeArray[i]);
+                i++;
             }
 
-            console.log('useFirst: ', arr.length);
+            console.log('useWhile: ', arr.length);
+        } catch(e) {
+            console.error(e);
+        }
+    }
+
+    async useDoWhile() {
+        try {
+            const arr = [];
+
+            let i = 0;
+
+            const arrLength = this.hugeArray.length;
+
+            do {
+                arr.push(this.hugeArray[i]);
+                i++;
+            } while(i < arrLength);
+
+            console.log('useDoWhile: ', arr.length);
         } catch(e) {
             console.error(e);
         }
@@ -141,9 +161,11 @@ class PlainJSLessons {
         try {
             const arr = [];
 
-            for(let i = 0; i < this.hugeArray.length; i++){
-                arr.push(this.hugeArray[i]);
-            }
+            this.hugeArray.some((value) => {
+                arr.push(value);
+
+                return false;
+            });
 
             console.log('useSome: ', arr.length);
         } catch(e) {
@@ -155,9 +177,11 @@ class PlainJSLessons {
         try {
             const arr = [];
 
-            for(let i = 0; i < this.hugeArray.length; i++){
-                arr.push(this.hugeArray[i]);
-            }
+            this.hugeArray.every((value) => {
+                arr.push(value);
+
+                return false;
+            });
 
             console.log('useEvery: ', arr.length);
         } catch(e) {
@@ -167,11 +191,7 @@ class PlainJSLessons {
 
     async useFilter() {
         try {
-            const arr = [];
-
-            for(let i = 0; i < this.hugeArray.length; i++){
-                arr.push(this.hugeArray[i]);
-            }
+            const arr = this.hugeArray.filter((item) => true);
 
             console.log('useFilter: ', arr.length);
         } catch(e) {
@@ -181,11 +201,10 @@ class PlainJSLessons {
 
     async useReduce() {
         try {
-            const arr = [];
-
-            for(let i = 0; i < this.hugeArray.length; i++){
-                arr.push(this.hugeArray[i]);
-            }
+            const arr = this.hugeArray.reduce((acc, value) => {
+                acc.push(value);
+                return acc;
+            }, []);
 
             console.log('useReduce: ', arr.length);
         } catch(e) {
@@ -197,9 +216,11 @@ class PlainJSLessons {
         try {
             const arr = [];
 
-            for(let i = 0; i < this.hugeArray.length; i++){
-                arr.push(this.hugeArray[i]);
-            }
+            this.hugeArray.find((value) => {
+                arr.push(value);
+
+                return false;
+            });
 
             console.log('useFind: ', arr.length);
         } catch(e) {
