@@ -4,7 +4,7 @@ class PlainJSLessons {
     executionTimes = new Map();
 
     loopsMethodsNames = [
-        'useWhile', 'useDoWhile', 'useFor', 'useForEach', 'useForOf', 'useForIn', 'useMap', 'useSome', 'useEvery', 'useFilter', 'useReduce', 'useFind'
+        'useFor', 'useForEach', 'useForOf', 'useForIn', 'useMap', 'useSome', 'useEvery', 'useFilter', 'useReduce', 'useFind', 'useWhile', 'useDoWhile',
     ]
 
     constructor(){
@@ -14,7 +14,7 @@ class PlainJSLessons {
     createLargeArray(){
         console.time('createLargeArray');
 
-        this.hugeArray = Array.from({ length: 1_000_000 }, () => Math.random()*100);
+        this.hugeArray = Array.from({ length: 100_000 }, () => Math.random()*100);
 
         console.log(this.hugeArray.length);
 
@@ -34,11 +34,13 @@ class PlainJSLessons {
     }
 
     async setMethodRunTime(methodName) {
-        const startTime = Date.now();
+        await new Promise((resolve) => setTimeout(resolve, 10_000));
+
+        const startTime = performance.now();
 
         this[methodName] && (await this[methodName]());
 
-        const endTime = Date.now();
+        const endTime = performance.now();
 
         const elapsedTime = endTime - startTime;
 
@@ -87,8 +89,8 @@ class PlainJSLessons {
         try {
             const arr = [];
 
-            for(let i of this.hugeArray) {
-                arr.push(this.hugeArray[i]);
+            for(const i of this.hugeArray) {
+                arr.push(i);
             }
 
             console.log('useForOf: ', arr.length);
@@ -101,9 +103,11 @@ class PlainJSLessons {
         try {
             // const arr = [];
             //
-            // for(let i = 0; i < this.hugeArray.length; i++){
-            //     arr.push(this.hugeArray[i]);
+            // for(const index in this.hugeArray) {
+            //     arr.push(this.hugeArray[index]);
             // }
+            //
+            // console.log('useForOf: ', arr.length);
         } catch(e) {
             console.error(e);
         }
@@ -180,7 +184,7 @@ class PlainJSLessons {
             this.hugeArray.every((value) => {
                 arr.push(value);
 
-                return false;
+                return true;
             });
 
             console.log('useEvery: ', arr.length);
