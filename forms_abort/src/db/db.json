@@ -1,0 +1,17 @@
+{
+  "posts": [
+    {
+      "id": "19ba",
+      "title": "My first post",
+      "author": "Homo",
+      "body": "Here goes my first post's content!\n\nMay be somewhere it will be real)"
+    },
+    {
+      "id": "cd9c",
+      "title": "Second post",
+      "author": "Homo Antropos",
+      "body": "My second post will be there"
+    }
+  ],
+  "comments": []
+}

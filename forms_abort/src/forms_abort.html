@@ -8,8 +8,15 @@
 <body>
 <div>
     <div class="button__container">
-        <!--        <label for="postIdPicker">choose post id</label>-->
-        <input id="postIdPicker">
+        <form id="postForm">
+            <label for="postTitle">title</label>
+            <input id="postTitle">
+            <label for="postAuthor">author</label>
+            <input id="postAuthor">
+            <label for="postBody">content</label>
+            <textarea rows="4" id="postBody" placeholder="text here"></textarea>
+        </form>
+
     </div>
     <div class="button__container">
         <button id="getPost">GET POST</button>
