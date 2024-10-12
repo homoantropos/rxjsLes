@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-module.exports = ['rxjs'].map(name => {
+module.exports = ['rxjs', 'forms_abort'].map(name => {
     return {
         name,
         entry: `./${name}/src/${name}.js`,
@@ -33,6 +33,10 @@ module.exports = ['rxjs'].map(name => {
                             presets: ["@babel/preset-env"]
                         }
                     }
+                },
+                {
+                    test: /\.(png|svg|jpg|jpeg|gif)$/i,
+                    type: 'asset/resource',
                 }
             ]
         },

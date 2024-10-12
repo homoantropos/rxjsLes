@@ -8,7 +8,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "devBuild:rxjs": "webpack --config-name rxjs --mode development",
     "prodBuild:rxjs": "webpack --config-name rxjs --mode production",
-    "devServer": "webpack-dev-server"
+    "devServer:rxjs": "webpack-dev-server --config-name rxjs",
+    "devBuild:forms_abort": "webpack --config-name forms_abort --mode development",
+    "prodBuild:forms_abort": "webpack --config-name forms_abort --mode production",
+    "devServer:forms_abort": "webpack-dev-server --config-name forms_abort"
   },
   "keywords": [],
   "author": "",
