@@ -8,3 +8,16 @@ store.retrievePosts();
 const formOperator = postsEditor;
 
 formOperator.initComponent();
+
+
+setTimeout(
+    () => console.log('store: ', store.posts), 3000
+)
+
+store.logPosts.subscribe(
+    (value) => {
+        console.log('suns: ', value);
+
+        console.log('store: ', store.posts);
+    }
+)

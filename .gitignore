@@ -9,3 +9,5 @@ node_modules/
 **android/
 
 **ios/
+
+**db.json

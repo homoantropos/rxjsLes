@@ -1,25 +1,25 @@
 import postsService from "./postsService";
 import {getDefaultObserver} from "../utils/getDefaultObserver";
-import {catchError, map, throwError} from "rxjs";
+import {catchError, map, Subject, tap, throwError} from "rxjs";
 
 class Store {
     posts = new Map();
+
+    logPosts = new Subject();
 
     storePost(post) {
         return postsService
             .createPost(post)
             .pipe(
-                map((post) => {
-                    this.setPost(post);
-
-                    return post;
-                }),
+                tap((post) => this.setPost(post)),
                 catchError((err) => throwError(err))
             )
     }
 
     setPost(post) {
         this.posts.set(post.id, post);
+
+        this.logPosts.next(this.posts);
     }
 
     setPosts(posts) {
@@ -35,8 +35,6 @@ class Store {
 
                 i++
             }
-
-            console.log('posts: ', store.posts);
         }
     }
 
