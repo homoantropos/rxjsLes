@@ -1,22 +1,41 @@
 import store from "../services/store";
-import loaderComponent from "./loaderComponent";
+import loaderSpinner from "./loaderComponent";
 import postsEditor from "./postsEditorComponent";
+import {delay} from "rxjs";
 
 class FormsAbortLessonApp {
-    initApplication() {
-        store.retrievePosts();
+    async initApplication() {
+        loaderSpinner.initLoader();
 
-        loaderComponent.initLoader();
+        loaderSpinner.toggleLoader(true);
 
-        postsEditor.initComponent();
+        await new Promise((resolve, reject) => {
+            try {
+                store.retrievePosts();
 
-        store.logPosts.subscribe(
-            (value) => {
-                console.log('suns: ', value);
+                postsEditor.initComponent();
 
-                console.log('store: ', store.posts);
+                store.logPosts.pipe(delay(1000)).subscribe(
+                    (value) => {
+                        console.log('suns: ', value);
+
+                        console.log('store: ', store.posts);
+
+                        loaderSpinner.toggleLoader(false);
+                    }
+                );
+
+                setTimeout(() => resolve(), 5000);
+            } catch(e) {
+                console.error(e);
+
+                reject();
             }
-        )
+
+        });
+
+        loaderSpinner.toggleLoader(false);
+
     }
 }
 

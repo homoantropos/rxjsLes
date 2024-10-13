@@ -1,11 +1,8 @@
 import viewClassBinder from "../services/viewClassBinder";
-import {ajax} from "rxjs/internal/ajax/ajax";
-import config from "../config/config";
 import {getDefaultObserver} from "../utils/getDefaultObserver";
-import {delay, map, mergeAll, tap} from "rxjs";
-import postsService from "../services/postsService";
 import store from "../services/store";
 import {domQueries} from "../config/domQueries";
+import loaderSpinner from "./loaderComponent";
 
 class PostsEditorComponent {
     posts;
@@ -44,7 +41,7 @@ class PostsEditorComponent {
             body: this.postBody.value
         }
 
-        this.loader.style.display = 'flex';
+        loaderSpinner.toggleLoader(true);
 
         const createPostSubs = store
             .storePost(post)
@@ -69,14 +66,16 @@ class PostsEditorComponent {
     successCreatePostHandler(post) {
         if (post) {
             this.postForm.reset();
-            this.loader.style.display = 'none';
+
+            loaderSpinner.toggleLoader(false);
         }
     }
 
 
     errorCreatePostHandler(error) {
         console.error(error);
-        this.loader.style.display = 'none';
+
+        loaderSpinner.toggleLoader(false);
     }
 
     _componentClassConfig = [
@@ -87,8 +86,7 @@ class PostsEditorComponent {
         domQueries.postBody,
         domQueries.searchForm,
         domQueries.searchQueryInput,
-        domQueries.foundContent,
-        domQueries.loader
+        domQueries.foundContent
     ]
 }
 
