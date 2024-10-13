@@ -49,14 +49,21 @@ class SearchComponent {
     searchPost(stringId) {
         const post = store.findPostById(stringId);
 
-        if (post && this.foundContent) {
+        if (stringId && post && this.foundContent) {
             this.foundContent.innerHTML = `
             <div>
-            <span>${post.id}</span>
-            <span>${post.author}</span>
-            <span>${post.title}</span>
-            <span>${post.body}</span>
-</div>`;
+                <span>${post.id}</span>
+                <span>${post.author}</span>
+                <span>${post.title}</span>
+                <span>${post.body}</span>
+            </div>`;
+        } else if(stringId.length) {
+            this.foundContent.innerHTML = `
+            <div>
+                <span>nothing found</span>
+            </div>`;
+        } else {
+            this.foundContent.innerHTML = `<div></div>`;
         }
     }
 
