@@ -1,7 +1,8 @@
-import store from "../services/store";
+import store from "../store/store";
 import loaderSpinner from "./loaderComponent";
 import postsEditor from "./postsEditorComponent";
-import {delay} from "rxjs";
+import {getDefaultObserver} from "../utils/getDefaultObserver";
+import searchComponent from "./searchComponent";
 
 class FormsAbortLessonApp {
     async initApplication() {
@@ -15,18 +16,14 @@ class FormsAbortLessonApp {
 
                 postsEditor.initComponent();
 
-                store.logPosts.pipe(delay(1000)).subscribe(
-                    (value) => {
-                        console.log('suns: ', value);
+                searchComponent.initSearchComponent();
 
-                        console.log('store: ', store.posts);
-
-                        loaderSpinner.toggleLoader(false);
-                    }
+                const logsSubs = store.logPosts.subscribe(
+                    getDefaultObserver(logsSubs, '', this.successRequestHandler.bind(this))
                 );
 
-                setTimeout(() => resolve(), 5000);
-            } catch(e) {
+                resolve();
+            } catch (e) {
                 console.error(e);
 
                 reject();
@@ -36,6 +33,14 @@ class FormsAbortLessonApp {
 
         loaderSpinner.toggleLoader(false);
 
+    }
+
+    successRequestHandler(value) {
+        console.log('value from subs: ', value);
+
+        console.log('value from store: ', store.store.getState().posts);
+
+        loaderSpinner.toggleLoader(false);
     }
 }
 

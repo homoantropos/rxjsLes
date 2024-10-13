@@ -1,16 +1,16 @@
 import config from "../config/config";
 import {ajax} from "rxjs/internal/ajax/ajax";
-import {delay, map} from "rxjs";
+import {map} from "rxjs";
 
 class PostsService {
     postApiUrl = config.server + 'posts';
 
     createPost(post) {
-        if(post)
-        return ajax.post(this.postApiUrl, post).pipe(
-            delay(1000),
-            map((value) => value.response)
-        )
+        if (post)
+            return ajax.post(this.postApiUrl, post)
+                .pipe(
+                    map((value) => value.response)
+                )
     }
 
     getPost(id) {

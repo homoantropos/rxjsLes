@@ -1,10 +1,14 @@
 import viewClassBinder from "../services/viewClassBinder";
 import {getDefaultObserver} from "../utils/getDefaultObserver";
-import store from "../services/store";
+import store from "../store/store";
 import {domQueries} from "../config/domQueries";
 import loaderSpinner from "./loaderComponent";
+import {takeUntil} from "rxjs";
+import {offline$} from "../../forms_abort";
 
 class PostsEditorComponent {
+    editedPost;
+
     posts;
 
     submitButton;
@@ -16,12 +20,6 @@ class PostsEditorComponent {
     postAuthor;
 
     postBody;
-
-    searchForm;
-
-    searchQueryInput;
-
-    foundContent;
 
     constructor() {
     }
@@ -35,7 +33,7 @@ class PostsEditorComponent {
     createPost(event) {
         event.preventDefault();
 
-        const post = {
+        this.editedPost = {
             title: this.postTitle.value,
             author: this.postAuthor.value,
             body: this.postBody.value
@@ -44,13 +42,17 @@ class PostsEditorComponent {
         loaderSpinner.toggleLoader(true);
 
         const createPostSubs = store
-            .storePost(post)
+            .storePost(this.editedPost)
+            .pipe(
+                takeUntil(offline$)
+            )
             .subscribe(
                 getDefaultObserver(
                     createPostSubs,
-                    '',
+                    'post save',
                     this.successCreatePostHandler.bind(this),
                     this.errorCreatePostHandler.bind(this),
+                    this.onCompleteHandler.bind(this)
                 )
             );
     }
@@ -65,6 +67,8 @@ class PostsEditorComponent {
 
     successCreatePostHandler(post) {
         if (post) {
+            this.editedPost.id = post.id;
+
             this.postForm.reset();
 
             loaderSpinner.toggleLoader(false);
@@ -78,15 +82,20 @@ class PostsEditorComponent {
         loaderSpinner.toggleLoader(false);
     }
 
+    onCompleteHandler() {
+        console.log('oncomplete: ');
+
+        !this.editedPost.id ? alert('You value doesn\'t saved please try again') : this.postForm.reset();
+
+        loaderSpinner.toggleLoader(false);
+    }
+
     _componentClassConfig = [
         domQueries.submitButton,
         domQueries.postForm,
         domQueries.postTitle,
         domQueries.postAuthor,
-        domQueries.postBody,
-        domQueries.searchForm,
-        domQueries.searchQueryInput,
-        domQueries.foundContent
+        domQueries.postBody
     ]
 }
 
