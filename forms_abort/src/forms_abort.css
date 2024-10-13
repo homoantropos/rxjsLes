@@ -41,7 +41,7 @@ button:disabled {
   color: darkgrey;
 }
 
-.button__container {
+.content__container {
   margin: 5px 0;
   width: 100%;
   display: flex;
@@ -49,18 +49,18 @@ button:disabled {
   justify-content: center;
 }
 
-.button__container label {
+.content__container label {
   width: 50%;
   text-align: center;
 }
 
-.button__container input {
+.content__container input {
   width: 100%;
   height: 40px;
   padding: 0 5px;
 }
 
-.button__container textarea {
+.content__container textarea {
   padding: 5px;
   width: 100%;
   font-family: "Roboto Condensed", sans-serif;
@@ -70,7 +70,7 @@ button:disabled {
   position: fixed;
   top: 0;
   left: 0;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   width: 100%;

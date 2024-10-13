@@ -2,9 +2,10 @@ import viewClassBinder from "../services/viewClassBinder";
 import {ajax} from "rxjs/internal/ajax/ajax";
 import config from "../config/config";
 import {getDefaultObserver} from "../utils/getDefaultObserver";
-import {map, mergeAll, tap} from "rxjs";
+import {delay, map, mergeAll, tap} from "rxjs";
 import postsService from "../services/postsService";
 import store from "../services/store";
+import {domQueries} from "../config/domQueries";
 
 class PostsEditorComponent {
     posts;
@@ -19,7 +20,14 @@ class PostsEditorComponent {
 
     postBody;
 
-    constructor() { }
+    searchForm;
+
+    searchQueryInput;
+
+    foundContent;
+
+    constructor() {
+    }
 
     initComponent() {
         viewClassBinder.createClassPropsDueViewConfig().bind(this)(this._componentClassConfig);
@@ -36,17 +44,16 @@ class PostsEditorComponent {
             body: this.postBody.value
         }
 
+        this.loader.style.display = 'flex';
+
         const createPostSubs = store
             .storePost(post)
             .subscribe(
                 getDefaultObserver(
                     createPostSubs,
                     '',
-                    (posts) => {
-                        if(post) {
-                            this.postForm.reset();
-                        }
-                    }
+                    this.successCreatePostHandler.bind(this),
+                    this.errorCreatePostHandler.bind(this),
                 )
             );
     }
@@ -59,7 +66,30 @@ class PostsEditorComponent {
         this.submitButton && this.submitButton.removeEventListener('click', this.createPost.bind(this));
     }
 
-    _componentClassConfig = [ 'submitButton', 'postForm', 'postTitle', 'postAuthor', 'postBody']
+    successCreatePostHandler(post) {
+        if (post) {
+            this.postForm.reset();
+            this.loader.style.display = 'none';
+        }
+    }
+
+
+    errorCreatePostHandler(error) {
+        console.error(error);
+        this.loader.style.display = 'none';
+    }
+
+    _componentClassConfig = [
+        domQueries.submitButton,
+        domQueries.postForm,
+        domQueries.postTitle,
+        domQueries.postAuthor,
+        domQueries.postBody,
+        domQueries.searchForm,
+        domQueries.searchQueryInput,
+        domQueries.foundContent,
+        domQueries.loader
+    ]
 }
 
 const postsEditor = new PostsEditorComponent();

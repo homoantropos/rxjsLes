@@ -8,12 +8,12 @@ class ViewClassBinder {
             let i = 0;
 
             while (i < viewConfigLength) {
-                let viewConfigItem = viewConfig[i];
+                const viewConfigItem = viewConfig[i];
 
-                if(typeof viewConfigItem === 'string') {
-                    viewConfigItem = viewConfigItem.replace('#', '');
+                if(typeof viewConfigItem === 'string' && !this[viewConfigItem]) {
+                    const reducedViewConfigItem = viewConfigItem.replace('#', '');
 
-                    this[viewConfig[i]] = document.querySelector(`#${viewConfig[i]}`);
+                    this[reducedViewConfigItem] = document.querySelector(`${viewConfigItem}`);
 
                     i++;
                 }

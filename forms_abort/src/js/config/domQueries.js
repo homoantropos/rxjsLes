@@ -1,8 +1,12 @@
 export const domQueries = {
     submitButton: '#submitButton',
-    postForm: '#post_form',
-    postTitle: '#title',
-    postAuthor: '#author',
-    postBody: '#postBody'
+    postForm: '#postForm',
+    postTitle: '#postTitle',
+    postAuthor: '#postAuthor',
+    postBody: '#postBody',
+    searchForm: '#searchForm',
+    searchQueryInput: '#searchQueryInput',
+    foundContent: '#foundContent',
+    loader: '#loader'
 }
 
