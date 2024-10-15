@@ -6,12 +6,14 @@
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "json-server --watch forms_abort/src/db/db.json",
     "devBuild:rxjs": "webpack --config-name rxjs --mode development",
     "prodBuild:rxjs": "webpack --config-name rxjs --mode production",
     "devServer:rxjs": "webpack-dev-server --config-name rxjs",
     "devBuild:forms_abort": "webpack --config-name forms_abort --mode development",
     "prodBuild:forms_abort": "webpack --config-name forms_abort --mode production",
-    "devServer:forms_abort": "webpack-dev-server --config-name forms_abort"
+    "devServer:forms_abort": "webpack-dev-server --config-name forms_abort",
+    "startServer:forms_abort": "npm-run-all --parallel server devServer:forms_abort"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +27,7 @@
     "html-webpack-plugin": "^5.6.0",
     "json-server": "^1.0.0-beta.3",
     "mini-css-extract-plugin": "^2.9.1",
+    "npm-run-all": "^4.1.5",
     "sass": "^1.79.5",
     "sass-loader": "^16.0.2",
     "style-loader": "^4.0.0",
