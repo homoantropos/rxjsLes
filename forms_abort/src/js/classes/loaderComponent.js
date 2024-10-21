@@ -1,32 +1,32 @@
-import {domQueries} from "../config/domQueries";
+import { domQueries } from "../config/domQueries";
 import viewClassBinder from "../services/viewClassBinder";
 
 class LoaderComponent {
-    loader;
+  loader;
 
-    initLoader() {
-        viewClassBinder.createClassPropsDueViewConfig().bind(this)(this._componentClassConfig);
+  initLoader() {
+    viewClassBinder.createClassPropsDueViewConfig().bind(this)(
+      this._componentClassConfig,
+    );
+  }
+
+  toggleLoader(condition) {
+    if (typeof condition === "boolean") {
+      condition ? this.showLoader() : this.hideLoader();
+    } else {
+      this.loader.display === "flex" ? this.hideLoader() : this.showLoader();
     }
+  }
 
-    toggleLoader(condition) {
-        if(typeof condition === 'boolean') {
-            condition ? this.showLoader() : this.hideLoader();
-        } else {
-            this.loader.display === 'flex' ? this.hideLoader() : this.showLoader();
-        }
-    }
+  showLoader() {
+    this.loader && (this.loader.style.display = "flex");
+  }
 
-    showLoader() {
-        this.loader && (this.loader.style.display = 'flex');
-    }
+  hideLoader() {
+    this.loader && (this.loader.style.display = "none");
+  }
 
-    hideLoader() {
-        this.loader && (this.loader.style.display = 'none');
-    }
-
-    _componentClassConfig = [
-        domQueries.loader
-    ]
+  _componentClassConfig = [domQueries.loader];
 }
 
 const loaderSpinner = new LoaderComponent();

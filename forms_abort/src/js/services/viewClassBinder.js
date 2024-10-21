@@ -1,43 +1,52 @@
-import {logDebug} from "../utils/debugLogger";
+import { logDebug } from "../utils/debugLogger";
 
 class ViewClassBinder {
-    createClassPropsDueViewConfig()  {
-        return function(viewConfig) {
-            if(!Array.isArray(viewConfig)) return;
+  createClassPropsDueViewConfig() {
+    return function (viewConfig) {
+      if (!Array.isArray(viewConfig)) return;
 
-            const viewConfigLength = viewConfig.length;
+      const viewConfigLength = viewConfig.length;
 
-            let i = 0;
+      let i = 0;
 
-            while (i < viewConfigLength) {
-                const viewConfigItem = viewConfig[i];
+      while (i < viewConfigLength) {
+        const viewConfigItem = viewConfig[i];
 
-                if(typeof viewConfigItem === 'string') {
-                    const reducedViewConfigItem = viewConfigItem.replace('#', '');
+        if (typeof viewConfigItem === "string") {
+          const reducedViewConfigItem = viewConfigItem.replace("#", "");
 
-                    const candidate = document.querySelector(`${viewConfigItem}`);
+          const candidate = document.querySelector(`${viewConfigItem}`);
 
-                    const hasProp = Object.prototype.hasOwnProperty.call(this, reducedViewConfigItem);
+          const hasProp = Object.prototype.hasOwnProperty.call(
+            this,
+            reducedViewConfigItem,
+          );
 
-                    const doesntHasValue = !this[reducedViewConfigItem];
+          const doesntHasValue = !this[reducedViewConfigItem];
 
-                    if(candidate && hasProp && doesntHasValue) {
-                        this[reducedViewConfigItem] = candidate;
-                    } else {
-                        !candidate && console.error('Such element is absent in view: ', viewConfigItem);
+          if (candidate && hasProp && doesntHasValue) {
+            this[reducedViewConfigItem] = candidate;
+          } else {
+            !candidate &&
+              console.error("Such element is absent in view: ", viewConfigItem);
 
-                        !hasProp && logDebug(`Component doesn\'t have such props: ${viewConfigItem}`);
+            !hasProp &&
+              logDebug(`Component doesn\'t have such props: ${viewConfigItem}`);
 
-                        !doesntHasValue && logDebug(`Component prop has value: ${this[reducedViewConfigItem]}`);
-                    }
-                } else {
-                    typeof viewConfigItem !== 'string' && console.error('Value is not string: ', viewConfigItem, i);
-                }
-
-                i++;
-            }
+            !doesntHasValue &&
+              logDebug(
+                `Component prop has value: ${this[reducedViewConfigItem]}`,
+              );
+          }
+        } else {
+          typeof viewConfigItem !== "string" &&
+            console.error("Value is not string: ", viewConfigItem, i);
         }
-    }
+
+        i++;
+      }
+    };
+  }
 }
 
 const viewClassBinder = new ViewClassBinder();

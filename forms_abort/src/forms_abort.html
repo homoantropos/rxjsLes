@@ -1,44 +1,43 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="925b5169720ffac26900.png" type="image/png">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="925b5169720ffac26900.png" type="image/png" />
     <title>forms_abort</title>
-</head>
-<body>
-<div>
-    <div class="content__container">
+  </head>
+  <body>
+    <div>
+      <div class="content__container">
         <form id="postForm">
-            <label for="postTitle">title</label>
-            <input id="postTitle">
-            <label for="postAuthor">author</label>
-            <input id="postAuthor">
-            <label for="postBody">content</label>
-            <textarea rows="4" id="postBody" placeholder="text here"></textarea>
+          <label for="postTitle">title</label>
+          <input id="postTitle" />
+          <label for="postAuthor">author</label>
+          <input id="postAuthor" />
+          <label for="postBody">content</label>
+          <textarea rows="4" id="postBody" placeholder="text here"></textarea>
         </form>
-    </div>
-    <div class="content__container">
+      </div>
+      <div class="content__container">
         <button id="getPost">GET POST</button>
         <button id="getPosts">GET POSTS</button>
-    </div>
-    <div class="content__container">
+      </div>
+      <div class="content__container">
         <button id="getGenerator">Get Generator</button>
         <button id="submitButton">Submit</button>
-    </div>
-    <div class="content__container">
+      </div>
+      <div class="content__container">
         <form id="searchForm">
-            <label for="searchQueryInput">search</label>
-            <input type="text" id="searchQueryInput">
+          <label for="searchQueryInput">search</label>
+          <input type="text" id="searchQueryInput" />
         </form>
-    </div>
-    <div class="content__container">
+      </div>
+      <div class="content__container">
         <p id="foundContent"></p>
+      </div>
     </div>
-</div>
-<div class="background" id="loader">
-    <div class="loader"></div>
-</div>
-
-</body>
+    <div class="background" id="loader">
+      <div class="loader"></div>
+    </div>
+  </body>
 </html>

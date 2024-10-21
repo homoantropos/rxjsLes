@@ -1,47 +1,49 @@
 import store from "../store/store";
 import loaderSpinner from "./loaderComponent";
 import postsEditor from "./postsEditorComponent";
-import {getDefaultObserver} from "../utils/getDefaultObserver";
+import { getDefaultObserver } from "../utils/getDefaultObserver";
 import searchComponent from "./searchComponent";
 
 class FormsAbortLessonApp {
-    async initApplication() {
-        loaderSpinner.initLoader();
+  async initApplication() {
+    loaderSpinner.initLoader();
 
-        loaderSpinner.toggleLoader(true);
+    loaderSpinner.toggleLoader(true);
 
-        await new Promise((resolve, reject) => {
-            try {
-                store.retrievePosts();
+    await new Promise((resolve, reject) => {
+      try {
+        store.retrievePosts();
 
-                postsEditor.initComponent();
+        postsEditor.initComponent();
 
-                searchComponent.initSearchComponent();
+        searchComponent.initSearchComponent();
 
-                const logsSubs = store.logPosts.subscribe(
-                    getDefaultObserver(logsSubs, '', this.successRequestHandler.bind(this))
-                );
+        const logsSubs = store.logPosts.subscribe(
+          getDefaultObserver(
+            logsSubs,
+            "",
+            this.successRequestHandler.bind(this),
+          ),
+        );
 
-                resolve();
-            } catch (e) {
-                console.error(e);
+        resolve();
+      } catch (e) {
+        console.error(e);
 
-                reject();
-            }
+        reject();
+      }
+    });
 
-        });
+    loaderSpinner.toggleLoader(false);
+  }
 
-        loaderSpinner.toggleLoader(false);
+  successRequestHandler(value) {
+    console.log("value from subs: ", value);
 
-    }
+    console.log("value from store: ", store.store.getState().posts);
 
-    successRequestHandler(value) {
-        console.log('value from subs: ', value);
-
-        console.log('value from store: ', store.store.getState().posts);
-
-        loaderSpinner.toggleLoader(false);
-    }
+    loaderSpinner.toggleLoader(false);
+  }
 }
 
 const formsAbortLessonApp = new FormsAbortLessonApp();
