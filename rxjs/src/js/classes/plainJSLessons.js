@@ -1,240 +1,255 @@
 class PlainJSLessons {
-    hugeArray = [];
+  hugeArray = [];
 
-    executionTimes = new Map();
+  executionTimes = new Map();
 
-    loopsMethodsNames = [
-        'useFor', 'useForEach', 'useForOf', 'useForIn', 'useMap', 'useSome', 'useEvery', 'useFilter', 'useReduce', 'useFind', 'useWhile', 'useDoWhile',
-    ]
+  loopsMethodsNames = [
+    "useFor",
+    "useForEach",
+    "useForOf",
+    "useForIn",
+    "useMap",
+    "useSome",
+    "useEvery",
+    "useFilter",
+    "useReduce",
+    "useFind",
+    "useWhile",
+    "useDoWhile",
+  ];
 
-    constructor(){
-        this.createLargeArray();
+  constructor() {
+    this.createLargeArray();
+  }
+
+  createLargeArray() {
+    console.time("createLargeArray");
+
+    this.hugeArray = Array.from({ length: 100_000 }, () => Math.random() * 100);
+
+    console.log(this.hugeArray.length);
+
+    console.timeEnd("createLargeArray");
+  }
+
+  checkLoopsTime() {
+    Promise.all(
+      this.loopsMethodsNames.map(
+        async (methodName) => await this.setMethodRunTime(methodName),
+      ),
+    )
+      .then(() => {
+        this.logMethodsTimes();
+
+        console.log("Done!");
+      })
+      .catch((error) => console.error(error));
+  }
+
+  async setMethodRunTime(methodName) {
+    await new Promise((resolve) => setTimeout(resolve, 10_000));
+
+    const startTime = performance.now();
+
+    this[methodName] && (await this[methodName]());
+
+    const endTime = performance.now();
+
+    const elapsedTime = endTime - startTime;
+
+    this.executionTimes.set(methodName, elapsedTime);
+  }
+
+  logMethodsTimes() {
+    const sortedTimesArray = Array.from(this.executionTimes).sort(
+      (a, b) => a[1] - b[1],
+    );
+
+    sortedTimesArray.forEach((item) => {
+      console.log(`${item[0]}: ${item[1].toFixed(2)} ms`);
+    });
+  }
+
+  async useFor() {
+    try {
+      const arr = [];
+
+      const arrLength = this.hugeArray.length;
+
+      let i = 0;
+
+      for (i; i < arrLength; i++) {
+        arr.push(this.hugeArray[i]);
+      }
+
+      console.log("useFor: ", arr.length);
+    } catch (e) {
+      console.error(e);
     }
+  }
 
-    createLargeArray(){
-        console.time('createLargeArray');
+  async useForEach() {
+    try {
+      const arr = [];
 
-        this.hugeArray = Array.from({ length: 100_000 }, () => Math.random()*100);
+      this.hugeArray.forEach((i) => arr.push(i));
 
-        console.log(this.hugeArray.length);
-
-        console.timeEnd('createLargeArray');
+      console.log("useForEach: ", arr.length);
+    } catch (e) {
+      console.error(e);
     }
+  }
 
-    checkLoopsTime() {
-        Promise.all(this.loopsMethodsNames.map(
-           async (methodName) => await this.setMethodRunTime(methodName)
-        ))
-            .then(() => {
-                this.logMethodsTimes();
+  async useForOf() {
+    try {
+      const arr = [];
 
-                console.log('Done!');
-            })
-            .catch((error) => console.error(error));
+      for (const i of this.hugeArray) {
+        arr.push(i);
+      }
+
+      console.log("useForOf: ", arr.length);
+    } catch (e) {
+      console.error(e);
     }
+  }
 
-    async setMethodRunTime(methodName) {
-        await new Promise((resolve) => setTimeout(resolve, 10_000));
-
-        const startTime = performance.now();
-
-        this[methodName] && (await this[methodName]());
-
-        const endTime = performance.now();
-
-        const elapsedTime = endTime - startTime;
-
-        this.executionTimes.set(methodName, elapsedTime);
+  async useForIn() {
+    try {
+      // const arr = [];
+      //
+      // for(const index in this.hugeArray) {
+      //     arr.push(this.hugeArray[index]);
+      // }
+      //
+      // console.log('useForOf: ', arr.length);
+    } catch (e) {
+      console.error(e);
     }
+  }
 
-    logMethodsTimes() {
-        const sortedTimesArray = Array.from(this.executionTimes).sort((a, b) => a[1] - b[1]);
+  async useMap() {
+    try {
+      const arr = this.hugeArray.map((value) => value);
 
-        sortedTimesArray.forEach((item) => {
-            console.log(`${item[0]}: ${item[1].toFixed(2)} ms`);
-        });
+      console.log("useMap: ", arr.length);
+    } catch (e) {
+      console.error(e);
     }
+  }
 
-    async useFor() {
-        try {
-            const arr = [];
+  async useWhile() {
+    try {
+      const arr = [];
 
-            const arrLength = this.hugeArray.length;
+      let i = 0;
 
-            let i = 0;
+      const arrLength = this.hugeArray.length;
 
-            for(i; i < arrLength; i++){
-                arr.push(this.hugeArray[i]);
-            }
+      while (i < arrLength) {
+        arr.push(this.hugeArray[i]);
+        i++;
+      }
 
-            console.log('useFor: ', arr.length);
-        } catch(e) {
-            console.error(e);
-        }
+      console.log("useWhile: ", arr.length);
+    } catch (e) {
+      console.error(e);
     }
+  }
 
-    async useForEach() {
-        try {
-            const arr = [];
+  async useDoWhile() {
+    try {
+      const arr = [];
 
-            this.hugeArray.forEach((i) => arr.push(i));
+      let i = 0;
 
-            console.log('useForEach: ', arr.length);
-        } catch(e) {
-            console.error(e);
-        }
+      const arrLength = this.hugeArray.length;
+
+      do {
+        arr.push(this.hugeArray[i]);
+        i++;
+      } while (i < arrLength);
+
+      console.log("useDoWhile: ", arr.length);
+    } catch (e) {
+      console.error(e);
     }
+  }
 
-    async useForOf() {
-        try {
-            const arr = [];
+  async useSome() {
+    try {
+      const arr = [];
 
-            for(const i of this.hugeArray) {
-                arr.push(i);
-            }
+      this.hugeArray.some((value) => {
+        arr.push(value);
 
-            console.log('useForOf: ', arr.length);
-        } catch(e) {
-            console.error(e);
-        }
+        return false;
+      });
+
+      console.log("useSome: ", arr.length);
+    } catch (e) {
+      console.error(e);
     }
+  }
 
-    async useForIn() {
-        try {
-            // const arr = [];
-            //
-            // for(const index in this.hugeArray) {
-            //     arr.push(this.hugeArray[index]);
-            // }
-            //
-            // console.log('useForOf: ', arr.length);
-        } catch(e) {
-            console.error(e);
-        }
+  async useEvery() {
+    try {
+      const arr = [];
+
+      this.hugeArray.every((value) => {
+        arr.push(value);
+
+        return true;
+      });
+
+      console.log("useEvery: ", arr.length);
+    } catch (e) {
+      console.error(e);
     }
+  }
 
-    async useMap() {
-        try {
-            const arr = this.hugeArray.map((value) => value);
+  async useFilter() {
+    try {
+      const arr = this.hugeArray.filter((item) => true);
 
-            console.log('useMap: ', arr.length);
-        } catch(e) {
-            console.error(e);
-        }
+      console.log("useFilter: ", arr.length);
+    } catch (e) {
+      console.error(e);
     }
+  }
 
-    async useWhile() {
-        try {
-            const arr = [];
+  async useReduce() {
+    try {
+      const arr = this.hugeArray.reduce((acc, value) => {
+        acc.push(value);
+        return acc;
+      }, []);
 
-            let i = 0;
-
-            const arrLength = this.hugeArray.length;
-
-            while(i < arrLength){
-                arr.push(this.hugeArray[i]);
-                i++;
-            }
-
-            console.log('useWhile: ', arr.length);
-        } catch(e) {
-            console.error(e);
-        }
+      console.log("useReduce: ", arr.length);
+    } catch (e) {
+      console.error(e);
     }
+  }
 
-    async useDoWhile() {
-        try {
-            const arr = [];
+  async useFind() {
+    try {
+      const arr = [];
 
-            let i = 0;
+      this.hugeArray.find((value) => {
+        arr.push(value);
 
-            const arrLength = this.hugeArray.length;
+        return false;
+      });
 
-            do {
-                arr.push(this.hugeArray[i]);
-                i++;
-            } while(i < arrLength);
-
-            console.log('useDoWhile: ', arr.length);
-        } catch(e) {
-            console.error(e);
-        }
+      console.log("useFind: ", arr.length);
+    } catch (e) {
+      console.error(e);
     }
+  }
 
-    async useSome() {
-        try {
-            const arr = [];
-
-            this.hugeArray.some((value) => {
-                arr.push(value);
-
-                return false;
-            });
-
-            console.log('useSome: ', arr.length);
-        } catch(e) {
-            console.error(e);
-        }
-    }
-
-    async useEvery() {
-        try {
-            const arr = [];
-
-            this.hugeArray.every((value) => {
-                arr.push(value);
-
-                return true;
-            });
-
-            console.log('useEvery: ', arr.length);
-        } catch(e) {
-            console.error(e);
-        }
-    }
-
-    async useFilter() {
-        try {
-            const arr = this.hugeArray.filter((item) => true);
-
-            console.log('useFilter: ', arr.length);
-        } catch(e) {
-            console.error(e);
-        }
-    }
-
-    async useReduce() {
-        try {
-            const arr = this.hugeArray.reduce((acc, value) => {
-                acc.push(value);
-                return acc;
-            }, []);
-
-            console.log('useReduce: ', arr.length);
-        } catch(e) {
-            console.error(e);
-        }
-    }
-
-    async useFind() {
-        try {
-            const arr = [];
-
-            this.hugeArray.find((value) => {
-                arr.push(value);
-
-                return false;
-            });
-
-            console.log('useFind: ', arr.length);
-        } catch(e) {
-            console.error(e);
-        }
-    }
-
-    destroyComponent(){
-        this.hugeArray = [];
-    }
+  destroyComponent() {
+    this.hugeArray = [];
+  }
 }
 
 const plainJSLessons = new PlainJSLessons();

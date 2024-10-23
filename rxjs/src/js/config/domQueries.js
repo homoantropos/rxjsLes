@@ -1,4 +1,4 @@
 export const domQueries = {
-    input: '#postIdPicker',
-    submitButton: '#submitButton'
-}
+  input: "#postIdPicker",
+  submitButton: "#submitButton",
+};

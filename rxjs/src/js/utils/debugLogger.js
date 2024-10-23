@@ -1,3 +1,3 @@
-export function logDebug(debugMessage){
-    console.warn(`[ Debug ] ${debugMessage}`);
+export function logDebug(debugMessage) {
+  console.warn(`[ Debug ] ${debugMessage}`);
 }
