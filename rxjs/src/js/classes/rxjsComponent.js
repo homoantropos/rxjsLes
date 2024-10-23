@@ -112,15 +112,18 @@ class RxjsComponent {
 
   notificationsLog = [];
 
+  useTimeInterval() {
+    logDebug("useTimeInterval start");
+  }
   useMaterialize() {
     logDebug("useMaterialize start");
 
     const producerSource = concat(
       throwError(() => new Error("Just silly error")).pipe(
-        catchError((error) => of(error)),
+        catchError((error) => of(error))
       ),
       of("a", "b", "c", 11, "d").pipe(map((value) => value.toUpperCase())),
-      EMPTY,
+      EMPTY
     );
 
     const materializeSub = producerSource
@@ -128,7 +131,7 @@ class RxjsComponent {
         catchError((error) => of(error)),
         materialize(),
         tap((notification) => this.notificationsLog.push(notification)),
-        dematerialize(),
+        dematerialize()
       )
       .subscribe(
         getDefaultObserver(
@@ -139,8 +142,8 @@ class RxjsComponent {
 
             console.log("notificationsLog: ", this.notificationsLog);
           },
-          (error) => console.log("err: ", error),
-        ),
+          (error) => console.log("err: ", error)
+        )
       );
   }
 
@@ -152,7 +155,7 @@ class RxjsComponent {
       take(3),
       share({
         resetOnRefCountZero: timer(1000),
-      }),
+      })
     );
 
     const subs1 = source.subscribe(getDefaultObserver(subs1, "subs 1: "));
@@ -172,15 +175,15 @@ class RxjsComponent {
     logDebug("useCombineLatestAll start");
 
     const numbers1 = range(1, 10).pipe(
-      concatMap((value) => timer(2000).pipe(map(() => value))),
+      concatMap((value) => timer(2000).pipe(map(() => value)))
     );
 
     const numbers2 = range(11, 10).pipe(
-      concatMap((value) => timer(1500).pipe(map(() => value))),
+      concatMap((value) => timer(1500).pipe(map(() => value)))
     );
 
     const numbers3 = range(21, 10).pipe(
-      concatMap((value) => timer(3500).pipe(map(() => value))),
+      concatMap((value) => timer(3500).pipe(map(() => value)))
     );
 
     const clicks = fromEvent(document, "click").pipe(map(() => "click 1!"));
@@ -198,7 +201,7 @@ class RxjsComponent {
     const concatAllSub = mainSubs
       .pipe(
         map((x) => of(x)),
-        concatAll(),
+        concatAll()
       )
       .subscribe(getDefaultObserver(concatAllSub, "concatMap works!"));
 
@@ -233,7 +236,7 @@ class RxjsComponent {
 
     if (this.lessonInput) {
       const listenInput = fromEvent(this.lessonInput, "input").pipe(
-        map((inputEvent) => inputEvent.target.value),
+        map((inputEvent) => inputEvent.target.value)
       );
 
       const sampleSub = listenInput
@@ -242,7 +245,7 @@ class RxjsComponent {
           distinctUntilChanged(),
           filter((value) => value.includes("a")),
           //sample(this.emitterSubject.asObservable()),
-          skipLast(),
+          skipLast()
         )
         .subscribe(getDefaultObserver(sampleSub, "sample works: "));
     }
@@ -255,17 +258,17 @@ class RxjsComponent {
 
     if (this.lessonInput) {
       const listenInput = fromEvent(this.lessonInput, "input").pipe(
-        map((inputEvent) => inputEvent.target.value),
+        map((inputEvent) => inputEvent.target.value)
       );
 
       const debounceSub = listenInput
         .pipe(
           debounceTime(500),
           distinctUntilChanged(),
-          filter((value) => value.includes("a")),
+          filter((value) => value.includes("a"))
         )
         .subscribe(
-          getDefaultObserver(debounceSub, "distinctUntilChange works: "),
+          getDefaultObserver(debounceSub, "distinctUntilChange works: ")
         );
     }
   }
@@ -275,7 +278,7 @@ class RxjsComponent {
 
     if (this.lessonInput) {
       const listenInput = fromEvent(this.lessonInput, "input").pipe(
-        map((inputEvent) => inputEvent.target.value),
+        map((inputEvent) => inputEvent.target.value)
       );
 
       const debounceSub = listenInput
@@ -289,7 +292,7 @@ class RxjsComponent {
 
     if (this.lessonInput) {
       const listenInput = fromEvent(this.lessonInput, "input").pipe(
-        map((inputEvent) => inputEvent.target.value),
+        map((inputEvent) => inputEvent.target.value)
       );
 
       const debounceSub = listenInput
@@ -303,7 +306,7 @@ class RxjsComponent {
 
     if (this.lessonInput) {
       const listenInput = fromEvent(this.lessonInput, "input").pipe(
-        map((inputEvent) => inputEvent.target.value),
+        map((inputEvent) => inputEvent.target.value)
       );
 
       const debounceSub = listenInput
@@ -316,7 +319,7 @@ class RxjsComponent {
     logDebug("useAuditTime start");
 
     const mouseMove = fromEvent(document, "mousemove").pipe(
-      map((museMove) => ({ x: museMove.clientX, y: museMove.clientY })),
+      map((museMove) => ({ x: museMove.clientX, y: museMove.clientY }))
     );
 
     const auditSubs = mouseMove
@@ -328,7 +331,7 @@ class RxjsComponent {
     logDebug("useAudit start");
 
     const mouseMove = fromEvent(document, "mousemove").pipe(
-      map((museMove) => ({ x: museMove.clientX, y: museMove.clientY })),
+      map((museMove) => ({ x: museMove.clientX, y: museMove.clientY }))
     );
 
     const auditSubs = mouseMove
@@ -348,7 +351,7 @@ class RxjsComponent {
     const windowToggleSub = sec1
       .pipe(
         windowToggle(opening, () => close),
-        mergeAll(),
+        mergeAll()
       )
       .subscribe(getDefaultObserver(windowToggleSub, "window toggle works"));
   }
@@ -358,17 +361,17 @@ class RxjsComponent {
 
     const clicks = fromEvent(document, "click").pipe(
       map(() => 1),
-      mergeScan((acc, curr) => of(acc + curr), 0),
+      mergeScan((acc, curr) => of(acc + curr), 0)
     );
 
     const sec1 = interval(1000).pipe(
       take(10),
-      map((x) => x + 1),
+      map((x) => x + 1)
     );
 
     const sec2 = interval(500).pipe(
       take(10),
-      map((x) => x + 1),
+      map((x) => x + 1)
     );
 
     const getPost = (id) => ajax.getJSON(config.url + "/" + getNoZeroId(id));
@@ -378,7 +381,7 @@ class RxjsComponent {
         switchMap((x) => (x % 2 ? sec1 : sec2)),
         concatMap((x) => getPost(x)),
         windowTime(2000, 5000),
-        mergeAll(),
+        mergeAll()
       )
       .subscribe(getDefaultObserver(winTimerSubs, "winTimer works"));
   }
@@ -401,7 +404,7 @@ class RxjsComponent {
         mergeMap((v) => (v % 2 ? sec1 : sec2)),
         concatMap((x) => getPosts(x)),
         windowCount(2, 4),
-        concatAll(),
+        concatAll()
       )
       .subscribe(getDefaultObserver(winCountSub, "winCount works"));
   }
@@ -415,7 +418,7 @@ class RxjsComponent {
 
     const sec2 = interval(5000).pipe(
       tap(() => console.log("sec 2 emitted!")),
-      map((v) => "sec2: " + " " + v),
+      map((v) => "sec2: " + " " + v)
     );
 
     const winSubs = sec1
@@ -423,7 +426,7 @@ class RxjsComponent {
         window(sec2),
         //map(win => win.pipe(take(2))),
         //switchAll(),
-        take(100),
+        take(100)
       )
       .subscribe(getDefaultObserver(winSubs, "window works!"));
   }
@@ -440,11 +443,11 @@ class RxjsComponent {
     const getIIF = iif(
       () => getFirst,
       interval(1000).pipe(take(10)),
-      interval(1000).pipe(take(10)),
+      interval(1000).pipe(take(10))
     );
 
     const clicks = fromEvent(document, "click").pipe(
-      mergeScan((acc, current) => of(acc + current), 0),
+      mergeScan((acc, current) => of(acc + current), 0)
     );
 
     const def = defer(clicks);
@@ -469,7 +472,7 @@ class RxjsComponent {
       map(({ elapsed }) => elapsed / duration),
       takeWhile((v) => v < 1),
       endWith(1),
-      map((v) => v * diff + start),
+      map((v) => v * diff + start)
     );
   }
 
@@ -489,11 +492,11 @@ class RxjsComponent {
         const y1 = second.clientY;
 
         return Math.sqrt(Math.pow(x1 - x0, 2) + Math.pow(y1 - y0, 2));
-      }),
+      })
     );
 
     const distanceSubs = distance.subscribe(
-      getDefaultObserver(distanceSubs, "pairwise works"),
+      getDefaultObserver(distanceSubs, "pairwise works")
     );
   }
 
@@ -510,24 +513,24 @@ class RxjsComponent {
             console.log("odd");
             return interval(1000).pipe(
               map((t) => t + x),
-              take(5),
+              take(5)
             );
           } else {
             console.log("even");
             return interval(1000).pipe(
               map((t) => t * (x + 1)),
               take(5),
-              delay(1000),
+              delay(1000)
             );
           }
         }),
         mergeMap((x) => ajax.getJSON(config.url + "/" + Number(x ? x : x + 1))),
-        mergeScan((acc, post) => of([...acc, post]), []),
+        mergeScan((acc, post) => of([...acc, post]), [])
       )
       .subscribe(
         getDefaultObserver(mergeScanSubs, "", (value) =>
-          console.log("posts: ", JSON.parse(JSON.stringify(value))),
-        ),
+          console.log("posts: ", JSON.parse(JSON.stringify(value)))
+        )
       );
   }
 
@@ -538,11 +541,11 @@ class RxjsComponent {
       tap(() => console.log("New Click!")),
       map((x) => 1),
       expand((x) => of(2 * x).pipe(delay(1000))),
-      take(10),
+      take(10)
     );
 
     const clicksSub = clicks.subscribe(
-      getDefaultObserver(clicksSub, "concatMap works!"),
+      getDefaultObserver(clicksSub, "concatMap works!")
     );
   }
 
@@ -552,7 +555,7 @@ class RxjsComponent {
     const clicks = fromEvent(document, "click").pipe(
       tap(() => console.log("New Click!")),
       exhaustMap((x) => interval(100).pipe(take(5))),
-      map((x) => ajax.getJSON(config.url + "/" + Number(x + 1))),
+      map((x) => ajax.getJSON(config.url + "/" + Number(x + 1)))
     );
 
     const clicksSub = clicks
@@ -567,7 +570,7 @@ class RxjsComponent {
 
     const clicks = fromEvent(document, "click").pipe(
       tap(() => console.log("New Click!")),
-      concatMap((x) => interval(1000).pipe(take(5))),
+      concatMap((x) => interval(1000).pipe(take(5)))
     );
 
     const clicksSub = clicks
@@ -590,7 +593,7 @@ class RxjsComponent {
         take(50),
         switchMap((id) => getPosts(id)),
         bufferWhen(() => interval(5000)),
-        filter((value) => !isEmptyArray(value)),
+        filter((value) => !isEmptyArray(value))
       )
       .subscribe(getDefaultObserver(clickSub, "buffer when works: "));
   }
@@ -608,8 +611,8 @@ class RxjsComponent {
         getDefaultObserver(
           bufferToggleSubs,
           "Buffered TOGGLE works: ",
-          (value) => isArray(value) && console.log("dd", value),
-        ),
+          (value) => isArray(value) && console.log("dd", value)
+        )
       );
   }
 
