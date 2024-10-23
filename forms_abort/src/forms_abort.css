@@ -23,9 +23,7 @@ button {
   background: red;
   color: antiquewhite;
   margin: 3px;
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 button:hover {

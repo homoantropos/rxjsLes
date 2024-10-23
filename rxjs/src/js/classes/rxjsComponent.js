@@ -109,12 +109,9 @@ class RxjsComponent {
       });
     }
   }
-
   notificationsLog = [];
-
   useTimeInterval() {
-    logDebug("useTimeInterval start");
-  }
+    logDebug("useTimeInterval start");}
   useMaterialize() {
     logDebug("useMaterialize start");
 
