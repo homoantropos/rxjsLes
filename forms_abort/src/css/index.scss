@@ -1,2 +1,11 @@
 @use "global";
 @use "loader.scss";
+
+.moved__element {
+	position: absolute;
+	top: 48px;
+	width: 100px;
+	height: 100px;
+	border: solid red 2px;
+	transition: all ease-out 100ms;
+}
