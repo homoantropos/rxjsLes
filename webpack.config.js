@@ -2,6 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const webpack = require("webpack");
 
 module.exports = ["rxjs", "forms_abort"].map((name) => {
 	return {
@@ -10,7 +11,8 @@ module.exports = ["rxjs", "forms_abort"].map((name) => {
 		output: {
 			path: path.resolve(__dirname, `./${name}/dist/`),
 			filename: `${name}.js`,
-			clean: true
+			clean: true,
+			publicPath: "/"
 		},
 		mode: "none",
 		module: {
@@ -41,6 +43,9 @@ module.exports = ["rxjs", "forms_abort"].map((name) => {
 			}),
 			new MiniCssExtractPlugin({
 				filename: `${name}.css`
+			}),
+			new webpack.DefinePlugin({
+				'process.env.NODE_ENV': JSON.stringify('development')
 			})
 		],
 		optimization: {
@@ -53,8 +58,7 @@ module.exports = ["rxjs", "forms_abort"].map((name) => {
 			liveReload: true,
 			hot: true,
 			historyApiFallback: true,
-			open: true,
-			port: 9000
+			open: true
 		}
 	};
 });

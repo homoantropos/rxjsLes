@@ -21,7 +21,13 @@ class Store {
   logPosts = new Subject();
 
   constructor() {
-    this.store = configureStore({ reducer: this.postsReducer });
+    this.store = configureStore({
+		reducer: this.postsReducer,
+		middleware: (getDefaultMiddleware) =>
+		  getDefaultMiddleware({
+			  serializableCheck: false
+		  }),
+	});
   }
 
   postsReducer = (state = this.initialState, action) => {
