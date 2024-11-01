@@ -3,11 +3,14 @@ import rxjsComponent from "./js/classes/rxjsComponent";
 import { concatAll, interval, map, mergeMap, of, take } from "rxjs";
 import { isSubscription } from "./js/utils/isSomething";
 import reduxStore from "./js/services/reduxStore.js";
-import plainJSLessons from "./js/classes/plainJSLessons";
+//import plainJSLessons from "./js/classes/plainJSLessons";
 
-const arrayLess = plainJSLessons;
 
-arrayLess.checkLoopsTime();
+console.log('AGAIN RESOLVED WORKING');
+
+// const arrayLess = plainJSLessons;
+//
+// arrayLess.checkLoopsTime();
 
 //reduxStore.showStore();
 

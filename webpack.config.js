@@ -10,8 +10,7 @@ module.exports = ["rxjs", "forms_abort"].map((name) => {
 		output: {
 			path: path.resolve(__dirname, `./${name}/dist/`),
 			filename: `${name}.js`,
-			clean: true,
-			publicPath: "./"
+			clean: true
 		},
 		mode: "none",
 		module: {
@@ -44,18 +43,18 @@ module.exports = ["rxjs", "forms_abort"].map((name) => {
 				filename: `${name}.css`
 			})
 		],
-		devServer: {
-			static: {
-				directory: path.resolve(__dirname, `./${name}/dist`),
-				watch: true
-			},
-			open: true,
-			liveReload: true,
-		},
 		optimization: {
 			minimize: true,
 			minimizer: [new TerserPlugin()]
 		},
-		devtool: "source-map"
+		devtool: "source-map",
+		devServer: {
+			static: path.resolve(__dirname, `./${name}/dist`),
+			liveReload: true,
+			hot: true,
+			historyApiFallback: true,
+			open: true,
+			port: 9000
+		}
 	};
 });
