@@ -5,8 +5,8 @@ import { isSubscription } from "./js/utils/isSomething";
 import reduxStore from "./js/services/reduxStore.js";
 //import plainJSLessons from "./js/classes/plainJSLessons";
 
+import fetchLesson from "./js/classes/fetchLesson";
 
-console.log('AGAIN RESOLVED WORKING');
 
 // const arrayLess = plainJSLessons;
 //
