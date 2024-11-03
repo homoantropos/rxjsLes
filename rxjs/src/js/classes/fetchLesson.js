@@ -3,6 +3,7 @@ import { domQueries } from "../config/domQueries";
 import { ajax } from "rxjs/internal/ajax/ajax";
 import config from "../config/config";
 import { map } from "rxjs";
+import { getDefaultObserver } from "../utils/getDefaultObserver";
 
 class FetchLesson {
 	fetchButton;
@@ -21,6 +22,20 @@ class FetchLesson {
 		}
 	}
 
+	fetchFakeProducts() {
+		const productsUrl = config.fakeStoreApi + config.fakeStoreEndpoints.products;
+
+		const fakeProdObs = ajax.getJSON(productsUrl)
+			.subscribe(getDefaultObserver(fakeProdObs, '',(products) => {
+				if(Array.isArray(products)) {
+					const { image } = products[0];
+
+					if(typeof image === "string") {
+						this.fetchImage(image);
+					}
+				}
+			}))
+	}
 
 	fetchTries = 1;
 
@@ -96,7 +111,8 @@ class FetchLesson {
 	}
 
 	fetchLessons() {
-		this.fetchImage();
+		//this.fetchImage();
+		this.fetchFakeProducts();
 	}
 
 	addListenerOnCreate() {
