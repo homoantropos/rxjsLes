@@ -1,75 +1,75 @@
 import rxjsService from "../services/rxjsService";
 
 import {
-  animationFrames,
-  audit,
-  auditTime,
-  buffer,
-  bufferCount,
-  bufferTime,
-  bufferToggle,
-  bufferWhen,
-  catchError,
-  combineLatest,
-  combineLatestAll,
-  concat,
-  concatAll,
-  concatMap,
-  debounce,
-  debounceTime,
-  defer,
-  delay,
-  dematerialize,
-  distinct,
-  distinctUntilChanged,
-  elementAt,
-  EMPTY,
-  endWith,
-  exhaustAll,
-  exhaustMap,
-  expand,
-  filter,
-  first,
-  forkJoin,
-  from,
-  fromEvent,
-  ignoreElements,
-  iif,
-  interval,
-  last,
-  map,
-  materialize,
-  mergeAll,
-  mergeMap,
-  mergeScan,
-  of,
-  pairwise,
-  race,
-  range,
-  retry,
-  sample,
-  scan,
-  share,
-  skip,
-  skipLast,
-  skipUntil,
-  Subject,
-  switchAll,
-  switchMap,
-  switchScan,
-  take,
-  takeLast,
-  takeUntil,
-  takeWhile,
-  tap,
-  throttle,
-  throwError,
-  timer,
-  window,
-  windowCount,
-  windowTime,
-  windowToggle,
-  windowWhen,
+	animationFrames,
+	audit,
+	auditTime,
+	buffer,
+	bufferCount,
+	bufferTime,
+	bufferToggle,
+	bufferWhen,
+	catchError,
+	combineLatest,
+	combineLatestAll,
+	concat,
+	concatAll,
+	concatMap,
+	debounce,
+	debounceTime,
+	defer,
+	delay,
+	dematerialize,
+	distinct,
+	distinctUntilChanged,
+	elementAt,
+	EMPTY,
+	endWith,
+	exhaustAll,
+	exhaustMap,
+	expand,
+	filter,
+	first,
+	forkJoin,
+	from,
+	fromEvent,
+	ignoreElements,
+	iif,
+	interval,
+	last,
+	map,
+	materialize,
+	mergeAll,
+	mergeMap,
+	mergeScan,
+	of,
+	pairwise,
+	race,
+	range,
+	retry,
+	sample,
+	scan,
+	share,
+	skip,
+	skipLast,
+	skipUntil,
+	Subject,
+	switchAll,
+	switchMap,
+	switchScan,
+	take,
+	takeLast,
+	takeUntil,
+	takeWhile,
+	tap,
+	throttle,
+	throwError,
+	timer, toArray,
+	window,
+	windowCount,
+	windowTime,
+	windowToggle,
+	windowWhen
 } from "rxjs";
 import { getDefaultObserver } from "../utils/getDefaultObserver";
 import { logDebug } from "../utils/debugLogger";
@@ -78,6 +78,7 @@ import config from "../config/config";
 import { ajax } from "rxjs/internal/ajax/ajax";
 import { getNoZeroId } from "../utils/utils";
 import { domQueries } from "../config/domQueries";
+import viewOperationsProvider from "../services/viewOperationsProvider";
 
 class RxjsComponent {
   rxService;
@@ -110,6 +111,37 @@ class RxjsComponent {
     }
   }
   notificationsLog = [];
+
+  useToArray() {
+	  logDebug("useToArray start");
+
+	  const nextPostId$ = timer(0, 1000).pipe(take(10));
+
+	  const tenSec$ = timer(0,10000).pipe(take(1));
+
+	  const toArrSubs = nextPostId$.pipe(
+		  mergeMap(
+			  () => {
+				  return ajax({ url: config.imagesSource, responseType: 'blob' }).pipe(map((response) => response.response));
+			  }
+		  ),
+		  bufferToggle(tenSec$, () => interval(10000).pipe(take(1)))
+	  ).subscribe(getDefaultObserver(toArrSubs, "toArrSubs: ", (images) => {
+		  if(Array.isArray(images) && images.length) {
+			  let i = 0;
+
+			  while (i < images.length) {
+
+				  const blob = images[i];
+
+				  viewOperationsProvider.addImageToDom(blob);
+
+				  i++
+			  }
+		  }
+	  }));
+  }
+
   useTimeInterval() {
     logDebug("useTimeInterval start");}
   useMaterialize() {

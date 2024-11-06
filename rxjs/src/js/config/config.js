@@ -6,5 +6,6 @@ export default {
 		carts: 'carts',
 		users: 'users',
 		login: 'login'
-	}
+	},
+	imagesSource: "https://picsum.photos/200/300"
 };

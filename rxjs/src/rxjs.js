@@ -1,5 +1,5 @@
 import "./rxjs.scss";
-// import rxjsComponent from "./js/classes/rxjsComponent";
+import rxjsComponent from "./js/classes/rxjsComponent";
 // import { concatAll, interval, map, mergeMap, of, take } from "rxjs";
 // import { isSubscription } from "./js/utils/isSomething";
 // import reduxStore from "./js/services/reduxStore.js";
@@ -7,67 +7,70 @@ import "./rxjs.scss";
 
 // import fetchLesson from "./js/classes/fetchLesson";
 
-class ParentClass {
-	constructor() {
-		this.commonProp = 'parent'
-	}
 
-	logCommonProp() {
-		console.log(this.commonProp);
-	}
-}
+rxjsComponent.useToArray();
 
-class ChildComponent extends ParentClass {
-	constructor() {
-		super();
-
-		this.commonProp
-	}
-}
-
-const childComponent = new ChildComponent();
-
-const parentComponent = new ParentClass();
-
-childComponent.logCommonProp();
-
-parentComponent.logCommonProp();
-
-delete childComponent.commonProp;
-
-ParentClass.prototype.commonProp = 'childParent';
-
-childComponent.logCommonProp();
-
-console.log(childComponent.commonProp);
-
-console.log('commonProp' in childComponent);
-
-const parentObject = {
-	commonProp: 'parent'
-}
-
-parentObject.logCommonProp = function() {
-	console.log('object: ', this.commonProp);
-}
-
-const childObject = Object.create(parentObject);
-
-childObject.commonProp = 'child';
-
-parentObject.logCommonProp();
-
-childObject.logCommonProp();
-
-delete childObject.commonProp;
-
-childObject.logCommonProp();
-
-console.log(childObject.commonProp);
-
-console.log('commonProp' in childObject);
-
-console.log(Object.hasOwnProperty.call(childObject, 'commonProp'));
+// class ParentClass {
+// 	constructor() {
+// 		this.commonProp = 'parent'
+// 	}
+//
+// 	logCommonProp() {
+// 		console.log(this.commonProp);
+// 	}
+// }
+//
+// class ChildComponent extends ParentClass {
+// 	constructor() {
+// 		super();
+//
+// 		this.commonProp
+// 	}
+// }
+//
+// const childComponent = new ChildComponent();
+//
+// const parentComponent = new ParentClass();
+//
+// childComponent.logCommonProp();
+//
+// parentComponent.logCommonProp();
+//
+// delete childComponent.commonProp;
+//
+// ParentClass.prototype.commonProp = 'childParent';
+//
+// childComponent.logCommonProp();
+//
+// console.log(childComponent.commonProp);
+//
+// console.log('commonProp' in childComponent);
+//
+// const parentObject = {
+// 	commonProp: 'parent'
+// }
+//
+// parentObject.logCommonProp = function() {
+// 	console.log('object: ', this.commonProp);
+// }
+//
+// const childObject = Object.create(parentObject);
+//
+// childObject.commonProp = 'child';
+//
+// parentObject.logCommonProp();
+//
+// childObject.logCommonProp();
+//
+// delete childObject.commonProp;
+//
+// childObject.logCommonProp();
+//
+// console.log(childObject.commonProp);
+//
+// console.log('commonProp' in childObject);
+//
+// console.log(Object.hasOwnProperty.call(childObject, 'commonProp'));
 // const arrayLess = plainJSLessons;
 //
 // arrayLess.checkLoopsTime();
