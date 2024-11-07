@@ -7,5 +7,5 @@ export default {
 		users: 'users',
 		login: 'login'
 	},
-	imagesSource: "https://picsum.photos/200/300"
+	imagesSource: "https://picsum.photos/200/300",
 };

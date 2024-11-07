@@ -112,6 +112,55 @@ class RxjsComponent {
   }
   notificationsLog = [];
 
+  moveImageWhileClicks() {
+	  let img;
+
+	  const imgSubs = ajax({url: config.imagesSource, responseType: 'blob'}).pipe(
+		 map((response) => response.response ? response.response : EMPTY)
+	  ).subscribe(getDefaultObserver(imgSubs, "imgSubs: ", (blob) => {
+		  blob && viewOperationsProvider.addImageToDom(blob);
+
+			setTimeout(() => {
+				img = document.querySelector("img");
+
+				if (img) {
+					const imageClicks = fromEvent(document, "click").pipe(
+						pairwise()
+					);
+
+					const imageClicksSub = imageClicks
+						.pipe(
+							map(([prev, curr]) => {
+								const xDiff = prev.x - curr.x;
+
+								const yDiff = prev.y - curr.y;
+
+								return { xDiff, yDiff };
+							})
+						)
+						.subscribe(
+							getDefaultObserver(
+								imageClicksSub,
+								"imageClicksSub: ",
+								(distance) => {
+									if(distance) {
+										const { left, top } = img.getBoundingClientRect();
+
+										const { xDiff, yDiff } = distance;
+
+										img.style.left = `${left - xDiff}px`;
+
+										img.style.top = `${top - yDiff}px`;
+									}
+								}
+							)
+						);
+				}
+			}, 500);
+
+	  }, null, () => console.log('imgSubs complete')));
+  }
+
   useToArray() {
 	  logDebug("useToArray start");
 

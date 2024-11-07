@@ -8,7 +8,7 @@ import rxjsComponent from "./js/classes/rxjsComponent";
 // import fetchLesson from "./js/classes/fetchLesson";
 
 
-rxjsComponent.useToArray();
+rxjsComponent.moveImageWhileClicks();
 
 // class ParentClass {
 // 	constructor() {
