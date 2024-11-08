@@ -8,12 +8,15 @@
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"server": "json-server --watch forms_abort/src/db/db.json",
 		"devBuild:rxjs": "webpack --config-name rxjs --mode development",
-		"prodBuild:rxjs": "webpack --config-name rxjs --mode production",
+		"prodBuild:rxjs": "NODE_ENV=production webpack --config-name rxjs --mode production",
 		"devServer:rxjs": "webpack-dev-server --config-name rxjs",
 		"devBuild:forms_abort": "webpack --config-name forms_abort --mode development",
-		"prodBuild:forms_abort": "webpack --config-name forms_abort --mode production",
+		"prodBuild:forms_abort": "NODE_ENV=production webpack --config-name forms_abort --mode production",
 		"devServer:forms_abort": "webpack-dev-server --config-name forms_abort",
-		"startServer:forms_abort": "npm-run-all --parallel server devServer:forms_abort"
+		"startServer:forms_abort": "npm-run-all --parallel server devServer:forms_abort",
+		"devBuild:push_notifications": "webpack --config-name push_notifications --mode development",
+		"prodBuild:push_notifications": "NODE_ENV=production webpack --config-name push_notifications --mode production",
+		"devServer:push_notifications": "webpack-dev-server --config-name push_notifications"
 	},
 	"keywords": [],
 	"author": "",

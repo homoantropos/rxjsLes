@@ -1,0 +1,24 @@
+{
+	"name": "com.blogspot.homoantroposs",
+	"version": "1.0.0",
+	"description": "just dummy push notification lesson",
+	"main": "push_notifications.js",
+	"private": true,
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "homoantropos"
+	},
+	"author": "Sergii Antropov",
+	"license": "ISC",
+	"dependencies": {
+		"@capacitor/android": "^6.1.2",
+		"@capacitor/core": "^6.1.2",
+		"@capacitor/ios": "^6.1.2"
+	},
+	"devDependencies": {
+		"@capacitor/cli": "^6.1.2"
+	}
+}
