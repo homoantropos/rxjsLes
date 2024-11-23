@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "496197084051",
+    "project_id": "arb-push",
+    "storage_bucket": "arb-push.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:496197084051:android:18424634e33c60c83f7e66",
+        "android_client_info": {
+          "package_name": "com.blogspot.homoantroposs"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2BS1kvJeD7cHxqJvjpmf0hZynAUNiezU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:496197084051:android:39957b4c98a2321d3f7e66",
+        "android_client_info": {
+          "package_name": "com.blogspot.homoantroposs.crashlytics"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2BS1kvJeD7cHxqJvjpmf0hZynAUNiezU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
