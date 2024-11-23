@@ -7,6 +7,34 @@ import rxjsComponent from "./js/classes/rxjsComponent";
 
 // import fetchLesson from "./js/classes/fetchLesson";
 
+class ParentClass {
+    constructor() {
+        this.commonProp = 'parent';
+    }
+
+	commonMethod() {
+		console.log('commonProp value: ', this.commonProp);
+	}
+}
+
+class ChildClass extends ParentClass {
+    constructor() {
+        super();
+        this.commonProp = 'child';
+    }
+}
+
+const parent = new ParentClass();
+
+const child = new ChildClass();
+
+parent.commonMethod();
+
+child.commonMethod();
+
+delete child.commonProp;
+
+child.commonMethod();
 
 rxjsComponent.moveImageWhileClicks();
 
