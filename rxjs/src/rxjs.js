@@ -3,40 +3,40 @@ import rxjsComponent from "./js/classes/rxjsComponent";
 // import { concatAll, interval, map, mergeMap, of, take } from "rxjs";
 // import { isSubscription } from "./js/utils/isSomething";
 // import reduxStore from "./js/services/reduxStore.js";
-//import plainJSLessons from "./js/classes/plainJSLessons";
+import plainJSLessons from "./js/classes/plainJSLessons";
 
 // import fetchLesson from "./js/classes/fetchLesson";
 
-class ParentClass {
-    constructor() {
-        this.commonProp = 'parent';
-    }
-
-	commonMethod() {
-		console.log('commonProp value: ', this.commonProp);
-	}
-}
-
-class ChildClass extends ParentClass {
-    constructor() {
-        super();
-        this.commonProp = 'child';
-    }
-}
-
-const parent = new ParentClass();
-
-const child = new ChildClass();
-
-parent.commonMethod();
-
-child.commonMethod();
-
-delete child.commonProp;
-
-child.commonMethod();
-
-rxjsComponent.moveImageWhileClicks();
+// class ParentClass {
+//     constructor() {
+//         this.commonProp = 'parent';
+//     }
+//
+// 	commonMethod() {
+// 		console.log('commonProp value: ', this.commonProp);
+// 	}
+// }
+//
+// class ChildClass extends ParentClass {
+//     constructor() {
+//         super();
+//         this.commonProp = 'child';
+//     }
+// }
+//
+// const parent = new ParentClass();
+//
+// const child = new ChildClass();
+//
+// parent.commonMethod();
+//
+// child.commonMethod();
+//
+// delete child.commonProp;
+//
+// child.commonMethod();
+//
+// rxjsComponent.moveImageWhileClicks();
 
 // class ParentClass {
 // 	constructor() {
@@ -99,9 +99,10 @@ rxjsComponent.moveImageWhileClicks();
 // console.log('commonProp' in childObject);
 //
 // console.log(Object.hasOwnProperty.call(childObject, 'commonProp'));
-// const arrayLess = plainJSLessons;
-//
-// arrayLess.checkLoopsTime();
+
+const arrayLess = plainJSLessons;
+
+ arrayLess.checkLoopsTime();
 
 //reduxStore.showStore();
 
