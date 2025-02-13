@@ -1,7 +1,7 @@
 class PlainJSLessons {
 	hugeArray = [];
 
-	length = 100_000;
+	length = 1_000_000;
 
 	executionTimes = new Map();
 
