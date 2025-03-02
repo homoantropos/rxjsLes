@@ -1,0 +1,24 @@
+@use "_mixins" as m;
+
+.content__container {
+	margin: 5px 0;
+	width: 100%;
+	&.flex__center {
+		@include m.flex-row-center;
+	}
+	&.flex__row-center {
+		@include m.flex-row-center;
+	}
+	&.flex__column {
+		@include m.flex-column;
+	}
+	&.flex__column-center {
+		@include m.flex-column-center;
+	}
+	& input {
+		width: 100%;
+		height: 40px;
+		padding: 0 5px;
+	}
+}
+

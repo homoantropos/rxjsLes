@@ -1,0 +1,27 @@
+button {
+	width: 50%;
+	min-height: 24px;
+	font-size: 18px;
+	padding: 8px;
+	border: none;
+	border-radius: 5px;
+	background: red;
+	color: antiquewhite;
+	margin: 3px;
+	transition:
+		background-color 0.3s ease,
+		color 0.3s ease;
+	&:hover {
+		background: darkred;
+		color: white;
+	}
+	&:active {
+		background: crimson;
+		color: white;
+	}
+	&:disabled {
+		background: grey;
+		color: darkgrey;
+	}
+}
+

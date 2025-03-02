@@ -4,7 +4,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const webpack = require("webpack");
 
-module.exports = ["rxjs", "forms_abort", "push_notifications"].map((name) => {
+module.exports = ["rxjs", "forms_abort", "push_notifications", "plain_js"].map((name) => {
 	return {
 		name,
 		entry: `./${name}/src/${name}.js`,
