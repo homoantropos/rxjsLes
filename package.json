@@ -25,9 +25,9 @@
 	"author": "",
 	"license": "ISC",
 	"devDependencies": {
-		"@babel/core": "^7.26.10",
-		"@babel/plugin-proposal-throw-expressions": "^7.25.9",
-		"@babel/preset-env": "^7.26.9",
+		"@babel/core": "^7.27.1",
+		"@babel/plugin-proposal-throw-expressions": "^7.27.1",
+		"@babel/preset-env": "^7.27.1",
 		"@eslint/js": "^9.25.1",
 		"babel-loader": "^10.0.0",
 		"cross-env": "^7.0.3",
@@ -46,7 +46,7 @@
 		"sass-migrator": "^2.3.1",
 		"style-loader": "^4.0.0",
 		"terser-webpack-plugin": "^5.3.14",
-		"webpack": "^5.99.6",
+		"webpack": "^5.99.7",
 		"webpack-cli": "^6.0.1",
 		"webpack-dev-server": "^5.2.1"
 	},
