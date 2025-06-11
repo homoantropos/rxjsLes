@@ -41,7 +41,7 @@
 		"npm-check-updates": "^18.0.1",
 		"npm-run-all": "^4.1.5",
 		"prettier": "3.5.3",
-		"sass": "^1.89.1",
+		"sass": "^1.89.2",
 		"sass-loader": "^16.0.5",
 		"sass-migrator": "^2.3.2",
 		"style-loader": "^4.0.0",
